@@ -141,7 +141,7 @@ body::after {
 }
 .navbar-brand .angel-icon {
     width: 36px; height: 36px;
-    background-image: url('../assets/logo.png');
+    background-image: url('https://yesir123886.github.io/kiro-auth-system/assets/logo.png');
     background-size: cover;
     background-position: center;
     border-radius: 10px;
