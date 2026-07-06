@@ -8,10 +8,10 @@
 <meta http-equiv="Expires" content="0">
 <title>ANGEL 授权中心</title>
 <meta name="theme-color" content="#0a0e27">
-<link rel="icon" type="image/svg+xml" href="https://yesir123886.github.io/kiro-auth-system/assets/favicon.svg">
-<link rel="icon" type="image/webp" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=20">
-<link rel="icon" type="image/png" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.png">
-<link rel="apple-touch-icon" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=20">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/webp" href="assets/logo.webp?v=21">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.webp?v=21">
 <!-- 资源预连接（加速外部跳转） -->
 <link rel="preconnect" href="https://yesir123886.github.io">
 <link rel="dns-prefetch" href="https://yesir123886.github.io">
@@ -1078,7 +1078,7 @@ body::before, body::after {
 <!-- 左侧面板：头像 / 标题 / 介绍 / TG -->
 <div class="left-panel">
   <div class="avatar-wrap">
-    <img src="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=20" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='https://yesir123886.github.io/kiro-auth-system/assets/logo.png'">
+    <img src="assets/logo.webp?v=21" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
   </div>
   <h1 class="nav-title" data-text="ANGEL" id="navTitle">ANGEL</h1>
   <p class="nav-subtitle">P蛋爱露出</p>
@@ -1348,13 +1348,18 @@ function showDownloadFeedback(paramName){
   },3600);
 }
 
-// 从 Gitee 仓库直接拉取参数文件下载
-  function downloadFromGitee(url, filename, toastMsg){
+// 从 Gitee API 拉取参数文件下载（API 支持 CORS，raw URL 不支持）
+  function downloadFromGitee(filename, toastMsg){
     showToast(toastMsg);
-    fetch(url).then(function(r){
+    var apiUrl='https://gitee.com/api/v5/repos/yesirsadad/cloud-parameter-update/contents/'+encodeURIComponent(filename);
+    fetch(apiUrl).then(function(r){
       if(!r.ok) throw new Error('HTTP '+r.status);
-      return r.blob();
-    }).then(function(blob){
+      return r.json();
+    }).then(function(data){
+      var content=atob(data.content.replace(/\n/g,''));
+      var bytes=new Uint8Array(content.length);
+      for(var i=0;i<content.length;i++) bytes[i]=content.charCodeAt(i);
+      var blob=new Blob([bytes],{type:'application/json'});
       var a=document.createElement('a');
       a.href=URL.createObjectURL(blob);
       a.download=filename;
@@ -1366,15 +1371,14 @@ function showDownloadFeedback(paramName){
       showToast('下载失败，请稍后重试');
     });
   }
-  var giteeBase='https://gitee.com/yesirsadad/cloud-parameter-update/raw/master/';
   document.getElementById('btnDownloadPub').addEventListener('click',function(){
-    downloadFromGitee(giteeBase+'公益.json','公益.json','公益版参数下载已开始');
+    downloadFromGitee('公益.json','公益版参数下载已开始');
   });
   document.getElementById('btnDownloadPaid').addEventListener('click',function(){
-    downloadFromGitee(giteeBase+'皇参.json','皇参.json','皇参版参数下载已开始');
+    downloadFromGitee('皇参.json','皇参版参数下载已开始');
   });
   document.getElementById('btnDownloadPaid2').addEventListener('click',function(){
-    downloadFromGitee(giteeBase+'皇参(2).json','皇参(2).json','皇参第二版参数下载已开始');
+    downloadFromGitee('皇参(2).json','皇参第二版参数下载已开始');
   });
 
 
@@ -1398,7 +1402,7 @@ document.getElementById('btnQRCode').addEventListener('click',function(e){
   overlay.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;animation:qrFadeIn .2s ease;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);';
   var modal=document.createElement('div');
   modal.style.cssText='background:linear-gradient(160deg,#1a1258,#0f1035);border:1px solid rgba(140,130,220,.25);border-radius:20px;padding:30px;text-align:center;max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:qrFadeIn .3s ease;';
-  modal.innerHTML='<p style="color:#d8dff0;font-size:15px;margin:0 0 16px;font-weight:600;">📱 扫码添加 TG：@PANGELD</p><img src="https://yesir123886.github.io/kiro-auth-system/assets/tg-qrcode.png" style="width:280px;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08);margin-bottom:14px;" alt="TG QR"><p style="color:rgba(180,170,220,.7);font-size:12px;margin:0;">点击任意位置关闭</p>';
+  modal.innerHTML='<p style="color:#d8dff0;font-size:15px;margin:0 0 16px;font-weight:600;">📱 扫码添加 TG：@PANGELD</p><img src="assets/tg-qrcode.png" style="width:280px;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08);margin-bottom:14px;" alt="TG QR"><p style="color:rgba(180,170,220,.7);font-size:12px;margin:0;">点击任意位置关闭</p>';
   overlay.appendChild(modal);
   overlay.addEventListener('click',function(){overlay.remove();});
   modal.addEventListener('click',function(e){e.stopPropagation();});
