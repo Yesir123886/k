@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>ANGEL 授权中心</title>
+<meta name="theme-color" content="#0a0e27">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/webp" href="assets/logo.webp?v=14">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.webp?v=14">
+<!-- 资源预连接（加速外部跳转） -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://1842160496.share.123pan.cn">
+<link rel="preconnect" href="https://buy.jry0.com">
+<link rel="preconnect" href="https://www.chaoziran.com">
+<link rel="preconnect" href="https://t.me">
+<link rel="preconnect" href="https://qm.qq.com">
+<link rel="dns-prefetch" href="https://hp.hysafe.top">
+<link rel="dns-prefetch" href="https://1842160496.share.123pan.cn">
+<link rel="dns-prefetch" href="https://buy.jry0.com">
+<link rel="dns-prefetch" href="https://www.chaoziran.com">
+<link rel="dns-prefetch" href="https://t.me">
+<link rel="dns-prefetch" href="https://qm.qq.com">
+<!-- 字体：使用系统原生字体，无需外部加载，国内秒开 -->
+<!-- CSP 安全策略 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http:; media-src 'self' data: blob: https:; img-src 'self' data: blob: https:; font-src 'self' data: https:;">
+<!-- 外部CSS延迟加载 -->
+<link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/style.css"></noscript>
+<style>
+/* ====== 全局字体 ====== */
+body, .nav-item, .nav-subtitle, .nav-quote, .nav-group-label, .tg-link, .dl-feedback {
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+}
+/* ANGEL 标题用系统字体 */
+.nav-title {
+  font-family: 'Trebuchet MS', 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+}
+
+/* ====== 炫彩流动文字（全局） ====== */
+/* 已移除 colorFlow 动画以提升性能，保留静态渐变文字 */
+
+/* 炫彩渐变背景（复用） */
+.shimmer-text,
+.nav-title,
+.nav-subtitle,
+.nav-group-label,
+.nav-quote {
+  background: linear-gradient(90deg, #ff6b9d, #c44dff, #6cb4ee, #6cffce, #ffd93d, #ff6b9d) !important;
+  background-size: 300% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* ====== 视频背景（极简版，零动画零效果，纯视频） ====== */
+#videoBgWrap {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-color: #080a14;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#videoBg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* ====== 顶部固定导航栏（美观、低性能开销） ====== */
+.top-nav {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  pointer-events: none;
+}
+.top-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(12, 16, 38, .78);
+  border: 1px solid rgba(120, 110, 200, .28);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, .35),
+    inset 0 1px 0 rgba(255, 255, 255, .08),
+    0 0 0 1px rgba(108, 92, 231, .06);
+  pointer-events: auto;
+}
+.top-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  color: rgba(210, 215, 245, .78);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .2s, color .2s, box-shadow .2s;
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  letter-spacing: .3px;
+}
+.top-nav-item:hover {
+  background: rgba(108, 92, 231, .16);
+  color: #fff;
+}
+.top-nav-item.active {
+  background: linear-gradient(135deg, rgba(108, 92, 231, .32), rgba(108, 92, 231, .14));
+  color: #fff;
+  box-shadow: 0 0 16px rgba(108, 92, 231, .28), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.top-nav-icon {
+  font-size: 17px;
+  line-height: 1;
+}
+@media (max-width: 520px) {
+  .top-nav-inner {
+    padding: 5px 6px;
+    gap: 2px;
+  }
+  .top-nav-item {
+    padding: 9px 13px;
+    font-size: 13px;
+  }
+  .top-nav-item span:not(.top-nav-icon) {
+    display: none;
+  }
+}
+
+/* 按钮文字改为白色 */
+.nav-item .shimmer-text {
+  animation: none !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #fff !important;
+  background-clip: unset !important;
+  color: #fff !important;
+}
+
+/* 按钮边框呼吸灯改为仅在悬停时触发，避免每帧重绘 box-shadow */
+.nav-item {
+  animation: none;
+  transition: border-color .3s, box-shadow .3s, transform .2s;
+}
+.nav-item:hover {
+  border-color: rgba(140,120,255,.38);
+  box-shadow: 0 0 12px rgba(108,92,231,.12);
+}
+.nav-item.primary:hover {
+  border-color: rgba(175,150,255,.55);
+  box-shadow: 0 0 14px rgba(108,92,231,.18);
+}
+.nav-item.kiro-btn.accent:hover {
+  border-color: rgba(0,230,230,.45);
+  box-shadow: 0 0 12px rgba(0,210,211,.15);
+}
+/* ====== 超大柔和光斑（极简高级） ====== */
+
+/* ========== 左右分栏布局 ========== */
+.main-wrapper {
+  max-width: 920px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 110px 24px 60px;
+  position: relative;
+  z-index: 2;
+}
+
+/* 头像已移除（性能优化） */
+/* 左侧面板 */
+.left-panel {
+  flex: 0 0 300px;
+  position: sticky;
+  top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 36px 28px;
+  border-radius: 24px;
+  background: rgba(15,20,42,.60);
+  border: 1px solid rgba(100,110,180,.18);
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+}
+/* 渐变描边（静态，不动画） */
+.left-panel::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(108,92,231,.4), rgba(0,210,211,.25), rgba(196,77,255,.3), rgba(108,92,231,.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.left-panel .nav-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  margin-bottom: 18px;
+}
+
+.left-panel .nav-title {
+  font-size: 36px;
+  letter-spacing: 10px;
+  margin: 0 0 6px;
+}
+
+.left-panel .nav-subtitle {
+  font-size: 13px;
+  margin-bottom: 22px;
+}
+
+.left-panel .nav-quote {
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin: 0 0 24px;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(120,110,200,.1);
+  border-bottom: 1px solid rgba(120,110,200,.1);
+  width: 100%;
+}
+
+.left-panel .tg-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: rgba(108,92,231,.15);
+  border: 1px solid rgba(108,92,231,.2);
+  color: #a78bfa;
+  font-size: 13px;
+  text-decoration: none;
+  transition: .25s;
+}
+.left-panel .tg-link:hover {
+  background: rgba(108,92,231,.3);
+  border-color: rgba(108,92,231,.4);
+  color: #fff;
+}
+
+/* 右侧面板 */
+.right-panel {
+  flex: 1;
+  min-width: 0;
+}
+.right-panel .nav-btn-list {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 响应式：移动端堆叠 */
+@media (max-width: 768px) {
+  .main-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px 50px;
+    gap: 24px;
+  }
+  .left-panel {
+    flex: none;
+    width: 100%;
+    max-width: 440px;
+    position: static;
+    padding: 28px 20px;
+  }
+  .left-panel .nav-avatar { width: 80px; height: 80px; }
+  .left-panel .nav-title { font-size: 28px; letter-spacing: 6px; }
+  .right-panel { width: 100%; max-width: 440px; }
+}
+@media (max-width: 380px) {
+  .left-panel .nav-title { font-size: 24px; letter-spacing: 4px; }
+  .left-panel .nav-quote { font-size: 13px; }
+}
+
+/* 按钮悬停粒子 */
+.nav-item .particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: particleBurst .6s ease-out forwards;
+}
+
+@keyframes particleBurst {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+}
+
+/* 点击涟漪 */
+.nav-item .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(180, 160, 255, .25);
+  transform: scale(0);
+  animation: rippleExpand .5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes rippleExpand {
+  0%   { opacity: .6; transform: scale(0); }
+  100% { opacity: 0;  transform: scale(4); }
+}
+
+/* 点击粒子爆炸 */
+@keyframes explodeParticle {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--ex), var(--ey)) scale(0); }
+}
+
+.nav-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  display: block;
+  box-shadow: 0 4px 24px rgba(108,92,231,.35);
+}
+
+.nav-title {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 12px;
+  margin: 0 0 10px;
+  /* 炫彩流动由全局 .nav-title 规则处理 */
+}
+
+.nav-subtitle {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 36px;
+  letter-spacing: 2px;
+  /* 炫彩流动由全局 .nav-subtitle 规则处理 */
+}
+
+/* 按钮列表 */
+.nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 16px 24px;
+  margin-bottom: 12px;
+  background: rgba(18,24,50,.58);
+  border: 1px solid rgba(100,120,200,.32);
+  border-radius: 14px;
+  color: #f3f6ff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  text-align: left;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+  cursor: pointer;
+  transition: background .2s, border-color .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item:hover {
+  background: rgba(28,38,75,.70);
+  border-color: rgba(108,92,231,.55);
+  box-shadow: 0 4px 16px rgba(108,92,231,.15);
+  color: #fff;
+}
+
+.nav-item:active {
+  background: rgba(35,48,95,.78);
+}
+
+/* 高亮按钮（主要操作） */
+.nav-item.primary {
+  background: rgba(80,60,150,.50);
+  border-color: rgba(140,120,255,.45);
+  color: #f7f3ff;
+  font-weight: 600;
+}
+
+.nav-item.primary:hover {
+  background: rgba(108,92,231,.58);
+  border-color: rgba(160,145,255,.6);
+  box-shadow: 0 4px 20px rgba(108,92,231,.25);
+}
+
+/* Kiro 板块按钮 */
+.nav-item.kiro-btn {
+  background: rgba(60,42,130,.45);
+  border-color: rgba(160,130,255,.38);
+  color: #f0e8ff;
+}
+.nav-item.kiro-btn:hover {
+  background: rgba(90,65,170,.55);
+  border-color: rgba(175,150,255,.55);
+  box-shadow: 0 4px 18px rgba(108,92,231,.2);
+  color: #fff;
+}
+.nav-item.kiro-btn.accent {
+  background: rgba(0,120,105,.42);
+  border-color: rgba(0,210,211,.35);
+  color: #d8fbf5;
+}
+.nav-item.kiro-btn.accent:hover {
+  background: rgba(0,160,140,.55);
+  border-color: rgba(0,230,230,.5);
+  box-shadow: 0 4px 18px rgba(0,210,211,.15);
+  color: #fff;
+}
+
+/* Kiro 抽奖按钮（金色） */
+.nav-item.kiro-btn.lottery {
+  background: rgba(180,130,20,.18);
+  border-color: rgba(255,200,60,.28);
+  color: #ffeeb8;
+}
+.nav-item.kiro-btn.lottery:hover {
+  background: rgba(210,160,30,.32);
+  border-color: rgba(255,215,80,.45);
+  box-shadow: 0 4px 18px rgba(255,190,40,.18);
+  color: #fff;
+}
+
+/* 下载按钮 */
+.nav-item.download {
+  background: rgba(0,160,140,.20);
+  border-color: rgba(0,210,211,.28);
+  color: #b8f5ed;
+}
+.nav-item.download:hover {
+  background: rgba(0,190,165,.34);
+  border-color: rgba(0,230,230,.42);
+  box-shadow: 0 4px 18px rgba(0,210,211,.18);
+  color: #fff;
+}
+
+.nav-item.download.paid {
+  background: rgba(90,70,150,.22);
+  border-color: rgba(160,140,255,.3);
+  color: #e8e0ff;
+}
+.nav-item.download.paid:hover {
+  background: rgba(108,92,231,.36);
+  border-color: rgba(175,160,255,.45);
+  box-shadow: 0 4px 20px rgba(108,92,231,.22);
+  color: #fff;
+}
+
+/* 分组标签 */
+.nav-group-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(150,140,200,.55);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 22px 0 10px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(100,110,180,.1);
+}
+.nav-group-label::before,
+.nav-group-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(108,92,231,.35), transparent);
+  border-radius: 1px;
+}
+
+/* 下载状态提示 */
+#dlStatus {
+  max-width: 480px;
+  margin: 14px auto 0;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  display: none;
+}
+
+/* 炫彩大字 */
+.nav-quote {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin: 8px 0 24px;
+  padding: 14px 0;
+  /* 炫彩流动由全局 .nav-quote 规则处理 */
+}
+
+/* 按钮悬停扫光 */
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.13), transparent);
+  transition: left .48s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+.nav-item:hover::before { left: 125%; }
+
+/* 页面入场动画（默认可见，JS增强） */
+.nav-btn-list > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.nav-btn-list.ready > * {
+  animation: fadeSlideUp .5s ease forwards;
+}
+.nav-btn-list.ready > *:nth-child(1)  { animation-delay: .04s; }
+.nav-btn-list.ready > *:nth-child(2)  { animation-delay: .08s; }
+.nav-btn-list.ready > *:nth-child(3)  { animation-delay: .12s; }
+.nav-btn-list.ready > *:nth-child(4)  { animation-delay: .16s; }
+.nav-btn-list.ready > *:nth-child(5)  { animation-delay: .20s; }
+.nav-btn-list.ready > *:nth-child(6)  { animation-delay: .24s; }
+.nav-btn-list.ready > *:nth-child(7)  { animation-delay: .28s; }
+.nav-btn-list.ready > *:nth-child(8)  { animation-delay: .32s; }
+.nav-btn-list.ready > *:nth-child(9)  { animation-delay: .36s; }
+.nav-btn-list.ready > *:nth-child(10) { animation-delay: .40s; }
+.nav-btn-list.ready > *:nth-child(11) { animation-delay: .44s; }
+.nav-btn-list.ready > *:nth-child(12) { animation-delay: .48s; }
+.nav-btn-list.ready > *:nth-child(13) { animation-delay: .52s; }
+.nav-btn-list.ready > *:nth-child(14) { animation-delay: .56s; }
+.nav-btn-list.ready > *:nth-child(15) { animation-delay: .60s; }
+.nav-btn-list.ready > *:nth-child(16) { animation-delay: .64s; }
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 文字选中 */
+::selection {
+  background: rgba(108,92,231,.55);
+  color: #fff;
+}
+
+/* 加载屏已移除（避免SW缓存导致卡死） */
+
+/* 移动端响应式 */
+@media (max-width: 600px) {
+  .nav-title { font-size: 26px; letter-spacing: 6px; }
+  .nav-subtitle { font-size: 12px; margin-bottom: 24px; }
+  .nav-quote { font-size: 14px; letter-spacing: 2px; margin: 4px 0 18px; }
+  .nav-btn-list { padding: 0 6px 40px; }
+  .nav-group-card { padding: 16px 14px 10px; margin-bottom: 18px; border-radius: 14px; }
+  .nav-item { padding: 12px 18px; font-size: 13px; margin-bottom: 10px; }
+  .nav-item .btn-icon { font-size: 16px; width: 20px; }
+  .nav-item.btn-lg { font-size: 14px; padding: 15px 20px; }
+  .nav-item.btn-lg .btn-icon { font-size: 18px; width: 24px; }
+  .nav-item.btn-sm { font-size: 12px; padding: 11px 14px; }
+  .nav-item.btn-sm .btn-icon { font-size: 14px; width: 18px; }
+  .nav-avatar { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 14px; }
+  .nav-group-label { font-size: 10px; margin: 0 0 8px; gap: 8px; }
+}
+@media (max-width: 380px) {
+  .nav-title { font-size: 22px; letter-spacing: 4px; }
+  .nav-item { font-size: 12px; padding: 11px 10px; }
+  .nav-group-card { padding: 12px 10px 8px; }
+  .nav-item.btn-lg { font-size: 13px; padding: 13px 16px; }
+}
+footer.footer { display: none !important; }
+
+/* ====== 按钮图标hover动画 ====== */
+.nav-item .shimmer-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+/* 图标固定宽度，左对齐 */
+.nav-item .btn-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  line-height: 1;
+}
+/* 文字标签 */
+.nav-item .btn-label {
+  flex: 1;
+  text-align: left;
+}
+/* hover时整体微弹 */
+.nav-item:hover .shimmer-text {
+  animation: textBounce .45s ease;
+  color: #fff !important;
+}
+}
+@keyframes textBounce {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.06); }
+  60%  { transform: scale(.97); }
+  100% { transform: scale(1); }
+}
+
+/* ====== 按钮hover上浮增强（通过JS控制transform，避免与3D倾斜冲突） ====== */
+.nav-item:hover {
+  box-shadow: 0 8px 24px rgba(108,92,231,.25), 0 0 20px rgba(108,92,231,.12) !important;
+}
+.nav-item.kiro-btn:hover {
+  box-shadow: 0 8px 24px rgba(108,92,231,.25), 0 0 20px rgba(160,130,255,.15) !important;
+}
+.nav-item.kiro-btn.accent:hover {
+  box-shadow: 0 8px 24px rgba(0,210,211,.2), 0 0 20px rgba(0,230,230,.12) !important;
+}
+.nav-item.kiro-btn.lottery:hover {
+  box-shadow: 0 8px 24px rgba(255,190,40,.2), 0 0 20px rgba(255,215,80,.12) !important;
+}
+.nav-item.download:hover {
+  box-shadow: 0 8px 24px rgba(0,210,211,.2), 0 0 20px rgba(0,230,230,.12) !important;
+}
+.nav-item.download.paid:hover {
+  box-shadow: 0 8px 24px rgba(108,92,231,.25), 0 0 20px rgba(175,160,255,.15) !important;
+}
+
+/* ====== 在线状态指示灯 ====== */
+.online-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 11px;
+  color: rgba(108,255,206,.7);
+  letter-spacing: 1px;
+}
+.online-status .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #6cffce;
+  box-shadow: 0 0 8px rgba(108,255,206,.8);
+  /* animation removed for perf */
+
+/* ====== 自定义滚动条 ====== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(10,12,25,.6); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6c5ce7, #c44dff, #6cffce);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #a78bfa, #e0b0ff, #8effd0); }
+::-moz-scrollbar { width: 8px; }
+::-moz-scrollbar-track { background: rgba(10,12,25,.6); }
+::-moz-scrollbar-thumb { background: linear-gradient(180deg, #6c5ce7, #c44dff); border-radius: 4px; }
+
+/* ====== 平滑滚动 ====== */
+html { scroll-behavior: smooth; background: transparent; }
+
+/* 禁用外部 CSS 的动态背景伪元素，避免遮挡视频 */
+body::before, body::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  animation: none !important;
+}
+
+/* ====== 按钮扫光效果 ====== */
+.nav-item { position: relative; overflow: hidden; }
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+  transition: left .6s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+.nav-item:hover::before { left: 120%; }
+
+/* ====== 标题Glitch故障特效 ====== */
+.nav-title { position: relative; }
+.nav-title.glitch {
+  animation: glitchShake .3s steps(2) 2;
+}
+.nav-title.glitch::before,
+.nav-title.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+}
+.nav-title.glitch::before {
+  color: #ff00ff;
+  -webkit-text-fill-color: #ff00ff;
+  z-index: -1;
+  animation: glitchOffset1 .3s steps(2) 2;
+}
+.nav-title.glitch::after {
+  color: #00ffff;
+  -webkit-text-fill-color: #00ffff;
+  z-index: -2;
+  animation: glitchOffset2 .3s steps(2) 2;
+}
+@keyframes glitchShake {
+  0% { transform: translate(0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-1px, -1px); }
+  100% { transform: translate(0); }
+}
+@keyframes glitchOffset1 {
+  0%, 100% { transform: translate(0); }
+  50% { transform: translate(-3px, 0); }
+}
+@keyframes glitchOffset2 {
+  0%, 100% { transform: translate(0); }
+  50% { transform: translate(3px, 0); }
+}
+
+/* ====== 重要按钮（提卡）脉冲呼吸 ====== */
+.nav-item.kiro-btn.accent {
+  transition: box-shadow .3s ease;
+}
+.nav-item.kiro-btn.accent:hover {
+  box-shadow: 0 0 20px rgba(0,230,230,.5), 0 0 40px rgba(0,210,211,.2);
+}
+
+/* ====== 背景飘浮粒子 ====== */
+#floatParticles {
+  position: fixed; inset: 0; z-index: -3; pointer-events: none;
+}
+
+/* ====== 视差滚动 ====== */
+/* 已移除视差效果，避免重复创建合成层 */
+
+/* ====== 下载状态反馈卡片 ====== */
+.dl-feedback {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  z-index: 9999;
+  min-width: 280px;
+  max-width: 90%;
+  padding: 16px 24px;
+  border-radius: 14px;
+  background: rgba(20,25,55,.92);
+  border: 1px solid rgba(108,92,231,.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4), 0 0 20px rgba(108,92,231,.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  transition: opacity .3s ease, transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  pointer-events: none;
+  overflow: hidden;
+}
+.dl-feedback.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.dl-feedback .dl-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.dl-feedback.show .dl-icon {
+  animation: dlIconSpin .8s ease-in-out;
+}
+@keyframes dlIconSpin {
+  0%   { transform: scale(1) rotate(0deg); }
+  50%  { transform: scale(1.3) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+.dl-feedback .dl-text {
+  font-size: 13px;
+  color: #d8dff0;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dl-feedback .dl-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #6c5ce7, #c44dff, #6cffce);
+  border-radius: 0 0 14px 14px;
+  transition: width .5s ease, background .3s ease;
+}
+.dl-feedback.success {
+  border-color: rgba(108,255,206,.4);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4), 0 0 24px rgba(108,255,206,.2);
+}
+.dl-feedback.success .dl-bar {
+  background: linear-gradient(90deg, #6cffce, #00d2d3, #6cffce);
+}
+.dl-feedback.success .dl-text {
+  color: #a8f0e8;
+}
+@media (max-width: 600px) {
+  .dl-feedback { min-width: 240px; padding: 14px 18px; bottom: 70px; }
+  .dl-feedback .dl-text { font-size: 12px; white-space: normal; }
+}
+
+/* ====== 返回顶部按钮 ====== */
+.back-to-top {
+  position: fixed; right: 20px; bottom: 80px; z-index: 9990;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(25,30,60,.85); border: 1px solid rgba(120,100,210,.25);
+  color: rgba(200,190,240,.8); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  opacity: 0; transform: translateY(20px); pointer-events: none;
+  transition: opacity .3s, transform .3s;
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover {
+  background: rgba(45,35,80,.9); border-color: rgba(150,130,230,.5);
+  color: #fff; box-shadow: 0 4px 25px rgba(120,100,210,.3);
+}
+
+/* ====== 按钮分组卡片 ====== */
+.nav-group-card {
+  position: relative;
+  background: rgba(14,18,38,.42);
+  border: 1px solid rgba(100,110,180,.16);
+  border-radius: 18px;
+  padding: 22px 20px 16px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.18);
+  transition: border-color .35s ease, box-shadow .35s ease;
+}
+.nav-group-card:hover {
+  border-color: rgba(120,110,200,.25);
+  box-shadow: 0 6px 28px rgba(0,0,0,.28);
+}
+.nav-group-card .nav-group-label {
+  margin-top: 0; padding-top: 0;
+  border-top: none;
+  margin-bottom: 14px;
+}
+.nav-group-card .nav-item:last-child {
+  margin-bottom: 0;
+}
+.nav-group-card .nav-item {
+  margin-bottom: 10px;
+}
+
+/* 板块色彩区分 */
+.nav-group-kiro {
+  border-left: 3px solid rgba(255,200,60,.3);
+}
+.nav-group-kiro:hover {
+  border-left-color: rgba(255,215,80,.5);
+}
+.nav-group-download {
+  border-left: 3px solid rgba(0,210,211,.3);
+}
+.nav-group-download:hover {
+  border-left-color: rgba(0,230,230,.5);
+}
+.nav-group-community {
+  border-left: 3px solid rgba(108,255,206,.25);
+}
+.nav-group-community:hover {
+  border-left-color: rgba(108,255,206,.45);
+}
+
+/* ====== 按钮字号层级 ====== */
+.nav-item.btn-lg {
+  font-size: 16px; padding: 19px 24px;
+}
+.nav-item.btn-lg .btn-icon { font-size: 21px; width: 28px; }
+.nav-item.btn-md {
+  font-size: 15px; padding: 16px 24px;
+}
+.nav-item.btn-sm {
+  font-size: 14px; padding: 13px 20px;
+}
+.nav-item.btn-sm .btn-icon { font-size: 15px; width: 20px; }
+
+/* ====== 按钮图标 hover 弹跳 ====== */
+.nav-item .btn-icon {
+  transition: transform .35s cubic-bezier(.68,-.55,.27,1.55);
+}
+.nav-item:hover .btn-icon {
+  animation: iconBounce .55s cubic-bezier(.68,-.55,.27,1.55);
+}
+@keyframes iconBounce {
+  0%   { transform: scale(1) translateY(0); }
+  25%  { transform: scale(1.3) translateY(-4px); }
+  50%  { transform: scale(.9) translateY(0); }
+  75%  { transform: scale(1.1) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* ====== 按钮悬浮提示 Tooltip ====== */
+.nav-item[data-tooltip] { position: relative; }
+.nav-item[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%; bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(30,25,60,.95);
+  border: 1px solid rgba(140,120,230,.35);
+  color: rgba(220,210,255,.9);
+  font-size: 11px; font-weight: 400; letter-spacing: .3px;
+  padding: 6px 12px; border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s, transform .2s;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.nav-item[data-tooltip]:hover::after {
+  opacity: 1; transform: translateX(-50%) translateY(0);
+}
+.nav-item[data-tooltip]::before {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(140,120,230,.35);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 10;
+}
+.nav-item[data-tooltip]:hover::before { opacity: 1; }
+
+/* ====== 按钮按下弹性反馈 ====== */
+.nav-item { transition: background .2s, border-color .2s, box-shadow .2s; }
+.nav-item.magnet-active { transition: background .2s, border-color .2s, box-shadow .2s, transform .08s ease; }
+.nav-item.pressed {
+  transform: scale(.94) !important;
+  transition: transform .06s ease !important;
+}
+.nav-item.pressed.released {
+  transform: scale(1) !important;
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1) !important;
+}
+
+/* ====== 底部信息美化 ====== */
+.footer-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(120,110,200,.08);
+  font-size: 11px;
+  color: rgba(150,140,210,.4);
+  letter-spacing: 1px;
+}
+.footer-info .fi-sep {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(150,140,210,.3);
+}
+.footer-info .fi-pulse {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #6cffce;
+  box-shadow: 0 0 4px rgba(108,255,206,.6);
+  margin-left: 4px;
+  /* animation removed for perf */
+}
+
+/* ====== prefers-reduced-motion ====== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+  .nav-group-card { opacity: 1; transform: none; }
+  .nav-title .title-char { animation: none; opacity: 1; }
+  .main-wrapper { transform: none !important; }
+}
+
+/* ====== 实时时钟 + 在线时长 ====== */
+.panel-clock {
+  margin-top: 16px;
+  text-align: center;
+  width: 100%;
+}
+.panel-clock .clock-time {
+  font-family: 'Trebuchet MS', 'PingFang SC', 'Microsoft YaHei', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(220,210,255,.9);
+  text-shadow: 0 0 12px rgba(196,77,255,.4);
+  line-height: 1;
+}
+.panel-clock .clock-date {
+  font-size: 10px;
+  color: rgba(150,140,210,.5);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+.panel-clock .clock-session {
+  font-size: 10px;
+  color: rgba(108,255,206,.6);
+  letter-spacing: 1px;
+  margin-top: 6px;
+  font-family: 'Trebuchet MS', 'PingFang SC', 'Microsoft YaHei', monospace;
+}
+@media (max-width: 768px) {
+  .panel-clock .clock-time { font-size: 22px; }
+}
+
+/* ====== 时段问候语 ====== */
+.greeting-text {
+  font-size: 13px;
+  margin-top: 10px;
+  letter-spacing: 1px;
+  opacity: .8;
+  animation: greetingFade .8s ease;
+}
+@keyframes greetingFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: .8; transform: translateY(0); }
+}
+
+
+
+</style>
+</head>
+<body style="background:transparent;min-height:100vh;">
+<!-- 视频背景容器 -->
+<div id="videoBgWrap" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-color:#080a14;background-size:cover;background-position:center;background-repeat:no-repeat;">
+  <video id="videoBgA" muted playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.4s ease-in-out;"></video>
+</div>
+
+<!-- 顶部固定导航栏 -->
+<nav class="top-nav" aria-label="页面导航">
+  <div class="top-nav-inner">
+    <a class="top-nav-item active" href="#top" data-target="top" title="回到顶部"><span class="top-nav-icon">🏠</span></a>
+    <a class="top-nav-item" href="#section-kiro" data-target="section-kiro" title="合集板块"><span class="top-nav-icon">🎮</span><span>合集</span></a>
+    <a class="top-nav-item" href="#section-download" data-target="section-download" title="云参数下载"><span class="top-nav-icon">📥</span><span>下载</span></a>
+    <a class="top-nav-item" href="#section-community" data-target="section-community" title="社群 & 联系"><span class="top-nav-icon">👥</span><span>社群</span></a>
+  </div>
+</nav>
+
+<!-- 返回顶部按钮 -->
+<button class="back-to-top" id="backToTop" title="返回顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
+
+<!-- ========== 左右分栏布局 ========== -->
+<div class="main-wrapper">
+
+<!-- 左侧面板：头像 / 标题 / 介绍 / TG -->
+<div class="left-panel">
+  <div class="avatar-wrap">
+    <img src="assets/logo.webp?v=14" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
+  </div>
+  <h1 class="nav-title" data-text="ANGEL" id="navTitle">ANGEL</h1>
+  <p class="nav-subtitle">P蛋爱露出</p>
+  <div class="nav-quote">世界以痛吻我，我却报之以歌。</div>
+  <a href="https://t.me/Czr114514nb" target="_blank" class="tg-link">📢 TG 频道 @Czr114514nb</a>
+  <div class="visitor-count" style="margin-top:18px;font-size:12px;color:rgba(160,150,210,.5);letter-spacing:1px;">
+    👁️ 总访问量：<span id="visitCount" style="color:#a78bfa;font-weight:600;">...</span> 次
+  </div>
+  <div class="online-status"><span class="dot"></span> 系统在线运行中</div>
+  <!-- 时段问候语 -->
+  <div class="greeting-text" id="greetingText"></div>
+  <!-- 实时时钟 + 在线时长 -->
+  <div class="panel-clock">
+    <div class="clock-time" id="clockTime">00:00:00</div>
+    <div class="clock-date" id="clockDate">—</div>
+    <div class="clock-session" id="clockSession">⏱ 在线 0s</div>
+  </div>
+</div>
+
+<!-- 右侧面板：所有按钮 -->
+<div class="right-panel">
+<div class="nav-btn-list">
+
+<!-- === Kiro 板块 === -->
+<div class="nav-group-card nav-group-kiro" id="section-kiro">
+<div class="nav-group-label">— 合集 —</div>
+<a href="https://1842160496.share.123pan.cn/123pan/hAs0Td-Qisbv" target="_blank" class="nav-item kiro-btn btn-md" data-tooltip="辅助/工具合集 · 123云盘"><span class="shimmer-text"><span class="btn-icon">🛠️</span><span class="btn-label">辅助/工具合集</span></span></a>
+<a href="https://buy.jry0.com/shop/E0ZBFJ5E" target="_blank" class="nav-item kiro-btn accent btn-lg" data-tooltip="前往发卡网购买卡密/参数/币号"><span class="shimmer-text"><span class="btn-icon">🛒</span><span class="btn-label">点我--提卡/参数/币号</span></span></a>
+<a href="http://hp.hysafe.top:9191/" target="_blank" class="nav-item kiro-btn lottery btn-lg" data-tooltip="🎉 Kiro 专属抽奖活动页"><span class="shimmer-text"><span class="btn-icon">🎁</span><span class="btn-label">点我跳转kiro抽奖地址</span></span></a>
+</div>
+
+<!-- === 参数下载 === -->
+<div class="nav-group-card nav-group-download" id="section-download">
+<div class="nav-group-label">— 云参数下载 —</div>
+<a id="btnDownloadPub" href="/api/params/公益.json" class="nav-item download btn-md" data-tooltip="免费公益版 · 无需授权直接下载"><span class="shimmer-text"><span class="btn-icon">📥</span><span class="btn-label">点我下载 公益版参数（免费）</span></span></a>
+<a id="btnDownloadPaid" href="/api/params/皇参.json" class="nav-item download paid btn-md" data-tooltip="付费皇参版 · 需购买授权后使用"><span class="shimmer-text"><span class="btn-icon">📥</span><span class="btn-label">点我下载 皇参版参数（需授权）</span></span></a>
+<a id="btnDownloadPaid2" href="/api/params/皇参(2).json" class="nav-item download paid btn-md" data-tooltip="付费皇参第二版 · 需购买授权后使用"><span class="shimmer-text"><span class="btn-icon">📥</span><span class="btn-label">点我下载 皇参第二版</span></span></a>
+</div>
+
+<!-- === 社群 & 联系 === -->
+<div class="nav-group-card nav-group-community" id="section-community">
+<div class="nav-group-label">— 社群 & 联系 —</div>
+<a href="https://t.me/Czr114514nb" target="_blank" class="nav-item btn-sm" data-tooltip="Telegram 频道 · 需科学上网"><span class="shimmer-text"><span class="btn-icon">📢</span><span class="btn-label">点我加入TG频道（需挂梯子）</span></span></a>
+<a href="https://qm.qq.com/q/K4BdkG1FCi" target="_blank" class="nav-item btn-sm" data-tooltip="QQ 闲聊群 · 吹水聊天交流"><span class="shimmer-text"><span class="btn-icon">👥</span><span class="btn-label">点我加入QQ闲聊群</span></span></a>
+<a id="btnCopyQQ" href="javascript:void(0)" class="nav-item btn-sm" style="cursor:pointer;" data-tooltip="一键复制群号到剪贴板"><span class="shimmer-text"><span class="btn-icon">📋</span><span class="btn-label">点击复制QQ群号 753430447</span></span></a>
+<a id="btnQRCode" href="javascript:void(0)" class="nav-item btn-sm" style="cursor:pointer;" data-tooltip="咨询 TG 代理 · 低价批发卡密"><span class="shimmer-text"><span class="btn-icon">🎫</span><span class="btn-label">点击TG咨询代理低价批卡</span></span></a>
+<a href="https://qm.qq.com/q/qHlgSLhEVG" target="_blank" class="nav-item btn-sm" data-tooltip="备用QQ群聊 · 防止失联"><span class="shimmer-text"><span class="btn-icon">🔗</span><span class="btn-label">点我添加备用群聊</span></span></a>
+<a href="https://1dpi1dpi.chuzhong20.xyz/%E5%A5%8B%E5%8F%91%E5%9B%BE%E5%BC%BA/" target="_blank" class="nav-item btn-sm" data-tooltip="深夜福利 · 点击查看"><span class="shimmer-text"><span class="btn-icon">🌙</span><span class="btn-label">深夜福利</span></span></a>
+</div>
+
+<!-- 底部信息 -->
+<div class="footer-info">
+  <span>v2.0</span>
+  <span class="fi-sep"></span>
+  <span>最后更新 2026-06-30</span>
+  <span class="fi-sep"></span>
+  <span>&copy; ANGEL <span class="fi-pulse"></span></span>
+</div>
+
+<!-- 底部留白 -->
+<div style="height:20px;"></div>
+
+</div>
+</div>
+
+</div>
+
+
+<script>
+// ====== 安全防护（防源码查看） ======
+(function(){
+  var b=document.body;
+  // 1. 禁用右键
+  b.setAttribute('oncontextmenu','return false');
+  // 2. 禁用选中/拖拽
+  b.setAttribute('onselectstart','return false');
+  b.setAttribute('ondragstart','return false');
+  // 3. 键盘拦截
+  document.addEventListener('keydown',function(e){
+    if(e.keyCode===123){e.preventDefault();return false;}
+    if(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74||e.keyCode===67)){e.preventDefault();return false;}
+    if(e.ctrlKey&&e.keyCode===85){e.preventDefault();return false;}
+  });
+  // 4. 控制台警告
+  console.log('%c⚠ 安全警告：请勿在此页面执行任何代码','color:red;font-size:20px;');
+})();
+
+// ====== 视频背景初始化（缩略图即时显示 + 视频后台加载） ======
+(function(){
+  var wrap=document.getElementById('videoBgWrap');
+  var v=document.getElementById('videoBgA');
+  if(!v||!wrap) return;
+  v.loop=false; v.muted=true;
+
+  var dayVideos=[
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-01.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-03.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-05.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-07.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-09.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-11.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-13.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-15.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-17.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-19.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-21.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-23.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-25.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-27.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-29.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-31.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-33.mp4'
+  ];
+  var nightVideos=[
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-02.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-04.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-06.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-08.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-10.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-12.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-14.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-16.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-18.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-20.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-22.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-24.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-26.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-28.mp4','https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-30.mp4',
+    'https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/bg-32.mp4'
+  ];
+  var hour=new Date().getHours();
+  var bgVideos=(hour>=6&&hour<18)?dayVideos:nightVideos;
+  var currentIdx=-1;
+  var switchTimer=null;
+  var isSwitching=false;
+  var videoReady=false;
+
+  var dayFallback='https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/fallback-day.jpg';
+  var nightFallback='https://cdn.jsdelivr.net/gh/Yesir123886/kiro-auth-system@master/assets/fallback-night.jpg';
+  var fallback=(hour>=6&&hour<18)?dayFallback:nightFallback;
+
+  function getPosterUrl(idx){
+    return bgVideos[idx].replace('.mp4','.webp');
+  }
+
+  function setPoster(idx){
+    // 双背景：poster 在上层，fallback 兜底。poster 加载前 fallback 可见
+    wrap.style.backgroundImage='url('+getPosterUrl(idx)+'), url('+fallback+')';
+  }
+
+  function clearTimer(){
+    if(switchTimer){ clearTimeout(switchTimer); switchTimer=null; }
+  }
+
+  function pickRandomIdx(){
+    var idx;
+    if(bgVideos.length<=1) return 0;
+    do{ idx=Math.floor(Math.random()*bgVideos.length); }while(idx===currentIdx);
+    return idx;
+  }
+
+  // 切换视频：先显缩略图 → 淡出 → 换源 → 淡入
+  function switchVideo(){
+    if(isSwitching) return;
+    isSwitching=true; clearTimer();
+    var nextIdx=pickRandomIdx();
+    currentIdx=nextIdx;
+
+    // ① 立刻显示下一个视频的缩略图
+    setPoster(nextIdx);
+
+    // ② 淡出当前视频（露出缩略图）
+    v.style.opacity='0';
+
+    setTimeout(function(){
+      // ③ 换源 + 加载
+      v.src=bgVideos[nextIdx];
+      v.load();
+      v.play().catch(function(){});
+      v.addEventListener('loadeddata',function onReady(){
+        v.removeEventListener('loadeddata',onReady);
+        videoReady=true;
+        v.style.opacity='1';
+        isSwitching=false;
+        scheduleSwitch();
+      });
+      // 5s超时 → 缩略图常驻，继续尝试
+      setTimeout(function(){ if(isSwitching){ isSwitching=false; scheduleSwitch(); } },5000);
+    },450);
+  }
+
+  function scheduleSwitch(){
+    clearTimer();
+    if(!isFinite(v.duration)||v.duration<=0) return;
+    var ms=Math.max((v.duration-0.5)*1000, 500);
+    switchTimer=setTimeout(switchVideo, ms);
+  }
+
+  v.addEventListener('ended',function(){
+    if(!isSwitching){ clearTimer(); switchVideo(); }
+  });
+
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ clearTimer(); v.pause(); }
+    else{ v.play().catch(function(){}); if(!isSwitching) scheduleSwitch(); }
+  });
+
+  v.addEventListener('error',function(){
+    // 视频失败 → 缩略图兜底，不黑屏
+    v.style.opacity='0';
+  });
+
+  // ====== 首次加载：从 jsDelivr 加载兜底图，视频后台加载 ======
+  currentIdx=pickRandomIdx();
+  wrap.style.backgroundImage='url('+fallback+')'; // ① 根据时段加载对应兜底图（白天/晚上）
+
+  function startBackgroundVideo(){
+    if(videoReady) return;
+    setPoster(currentIdx);                             // ② 启动真实poster加载
+    v.preload='auto';                                  // 关键：允许浏览器缓冲视频数据
+    v.autoplay=true;                                   // 关键：加载完成后自动播放
+    v.muted=true;                                      // 确保静音以允许自动播放
+    v.src=bgVideos[currentIdx];                        // ③ 后台加载视频
+    v.load();
+    v.play().catch(function(){});                        // 主动触发播放，浏览器会开始缓冲
+
+    firstTimeout=setTimeout(function(){
+      if(!videoReady){
+        // 5s还没加载完 → 缩略图继续显示，尝试下一段
+        firstTimeout=null;
+        currentIdx=pickRandomIdx();
+        setPoster(currentIdx);
+        v.src=bgVideos[currentIdx];
+        v.load();
+        v.play().catch(function(){});
+      }
+    },5000);
+  }
+
+  var firstTimeout=null;
+
+  v.addEventListener('loadeddata',function onFirst(){
+    v.removeEventListener('loadeddata',onFirst);
+    videoReady=true;
+    if(firstTimeout){ clearTimeout(firstTimeout); firstTimeout=null; }
+    v.style.opacity='1';        // 视频就绪 → 淡入覆盖缩略图
+    v.play().catch(function(){});
+    scheduleSwitch();
+  });
+
+  // 页面有兜底图，立即开始后台加载视频
+  startBackgroundVideo();
+})();
+
+// 下载状态反馈（多阶段进度）
+function showDownloadFeedback(paramName){
+  var old=document.querySelector('.dl-feedback');
+  if(old) old.remove();
+  var card=document.createElement('div');
+  card.className='dl-feedback';
+  card.innerHTML='<span class="dl-icon">🔄</span><span class="dl-text">正在连接云端服务器...</span><div class="dl-bar"></div>';
+  document.body.appendChild(card);
+  requestAnimationFrame(function(){card.classList.add('show');});
+
+  var icon=card.querySelector('.dl-icon');
+  var text=card.querySelector('.dl-text');
+  var bar=card.querySelector('.dl-bar');
+
+  // 阶段1：连接中
+  bar.style.width='20%';
+
+  // 阶段2：获取参数
+  setTimeout(function(){
+    icon.textContent='📥';
+    text.textContent='正在获取最新'+paramName+'参数...';
+    bar.style.width='55%';
+  },600);
+
+  // 阶段3：下载成功
+  setTimeout(function(){
+    icon.textContent='✅';
+    text.textContent=paramName+'参数下载成功！请查看浏览器下载列表';
+    bar.style.width='100%';
+    card.classList.add('success');
+  },1500);
+
+  // 自动消失
+  setTimeout(function(){
+    card.classList.remove('show');
+    setTimeout(function(){if(card.parentNode) card.remove();},350);
+  },3600);
+}
+
+document.getElementById('btnDownloadPub').addEventListener('click',function(e){
+  e.preventDefault();
+  showToast('公益版参数文件待更新，请稍后重试');
+});
+document.getElementById('btnDownloadPaid').addEventListener('click',function(e){
+  e.preventDefault();
+  showToast('皇参版参数文件待更新，请稍后重试');
+});
+document.getElementById('btnDownloadPaid2').addEventListener('click',function(e){
+  e.preventDefault();
+  showToast('皇参第二版参数文件待更新，请稍后重试');
+});
+
+
+
+function showToast(msg){
+  var el=document.getElementById('dlToast');
+  if(!el){el=document.createElement('div');el.id='dlToast';document.body.appendChild(el);}
+  el.textContent=msg;
+  el.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;padding:12px 28px;background:rgba(108,92,231,.92);color:#fff;border-radius:10px;font-size:13px;transition:opacity .3s;opacity:1;';
+  setTimeout(function(){el.style.opacity='0';setTimeout(function(){el.remove()},330)},2500);
+}
+
+// TG 二维码弹窗
+document.getElementById('btnQRCode').addEventListener('click',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  var existing=document.getElementById('qrModal');
+  if(existing){existing.remove();return;}
+  var overlay=document.createElement('div');
+  overlay.id='qrModal';
+  overlay.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;animation:qrFadeIn .2s ease;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);';
+  var modal=document.createElement('div');
+  modal.style.cssText='background:linear-gradient(160deg,#1a1258,#0f1035);border:1px solid rgba(140,130,220,.25);border-radius:20px;padding:30px;text-align:center;max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:qrFadeIn .3s ease;';
+  modal.innerHTML='<p style="color:#d8dff0;font-size:15px;margin:0 0 16px;font-weight:600;">📱 扫码添加 TG：@PANGELD</p><img src="assets/tg-qrcode.png" style="width:280px;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.08);margin-bottom:14px;" alt="TG QR"><p style="color:rgba(180,170,220,.7);font-size:12px;margin:0;">点击任意位置关闭</p>';
+  overlay.appendChild(modal);
+  overlay.addEventListener('click',function(){overlay.remove();});
+  modal.addEventListener('click',function(e){e.stopPropagation();});
+  document.body.appendChild(overlay);
+});
+
+// ====== 按钮悬停粒子特效 ======
+var PARTICLE_COLORS = ['#ff6b9d','#c44dff','#6cb4ee','#6cffce','#ffd93d','#fff'];
+document.querySelectorAll('.nav-item').forEach(function(btn){
+  btn.addEventListener('mouseenter',function(e){
+    for(var i=0;i<7;i++){
+      var p=document.createElement('span');
+      p.className='particle';
+      var angle=Math.random()*Math.PI*2;
+      var dist=30+Math.random()*50;
+      p.style.cssText='position:absolute;left:50%;top:50%;width:'+(3+Math.random()*4)+'px;height:'+(3+Math.random()*4)+'px;border-radius:50%;background:'+PARTICLE_COLORS[Math.floor(Math.random()*PARTICLE_COLORS.length)]+';pointer-events:none;z-index:10;--px:'+(Math.cos(angle)*dist)+'px;--py:'+(Math.sin(angle)*dist)+'px;';
+      btn.style.overflow='hidden';
+      btn.style.position='relative';
+      btn.appendChild(p);
+      (function(el){setTimeout(function(){el.remove();},620);})(p);
+    }
+  });
+});
+
+// ====== 按钮点击粒子爆炸（增强版） ======
+document.querySelectorAll('.nav-item').forEach(function(btn){
+  btn.addEventListener('click',function(e){
+    var rect=btn.getBoundingClientRect();
+    var cx=e.clientX-rect.left, cy=e.clientY-rect.top;
+    // 爆炸粒子
+    for(var i=0;i<14;i++){
+      var p=document.createElement('span');
+      var angle=(i/14)*Math.PI*2+Math.random()*.6;
+      var dist=50+Math.random()*90;
+      var ec=['#ff6b9d','#c44dff','#6cb4ee','#6cffce','#ffd93d','#fff','rgba(200,170,255,.9)'];
+      p.style.cssText='position:absolute;left:'+cx+'px;top:'+cy+'px;width:'+(3+Math.random()*4)+'px;height:'+(3+Math.random()*4)+'px;border-radius:50%;pointer-events:none;z-index:15;background:'+ec[i%ec.length]+';--ex:'+(Math.cos(angle)*dist)+'px;--ey:'+(Math.sin(angle)*dist)+'px;animation:explodeParticle .65s ease-out forwards;';
+      btn.style.overflow='hidden';
+      btn.appendChild(p);
+      (function(el){setTimeout(function(){el.remove();},700);})(p);
+    }
+    // 涟漪
+    var ripple=document.createElement('span');
+    ripple.className='ripple';
+    var size=Math.max(rect.width,rect.height)*1.5;
+    ripple.style.cssText='position:absolute;left:'+(cx-size/2)+'px;top:'+(cy-size/2)+'px;width:'+size+'px;height:'+size+'px;pointer-events:none;z-index:5;';
+    btn.appendChild(ripple);
+    (function(el){setTimeout(function(){el.remove();},550);})(ripple);
+  });
+});
+// ====== 按钮图标hover弹跳 ======
+document.querySelectorAll('.nav-item').forEach(function(btn){
+  var shimmer=btn.querySelector('.shimmer-text');
+  if(!shimmer) return;
+  btn.addEventListener('mouseenter',function(){
+    shimmer.style.animation='none';
+    void shimmer.offsetWidth; // trigger reflow
+    shimmer.style.animation='textBounce .45s ease';
+  });
+});
+
+// ====== 标题+副标题+诗句 打字机效果 ======
+(function(){
+  var title=document.querySelector('.left-panel .nav-title');
+  var subtitle=document.querySelector('.left-panel .nav-subtitle');
+  var quote=document.querySelector('.left-panel .nav-quote');
+  var titleText='ANGEL';
+  var subText='P蛋爱露出';
+  var quoteText='世界以痛吻我，我却报之以歌。';
+  if(title){title.textContent='';}
+  if(subtitle){subtitle.textContent='';}
+  if(quote){quote.textContent='';}
+  var i=0;
+  setTimeout(function type(){
+    if(title&&i<titleText.length){
+      title.textContent=titleText.slice(0,i+1);
+      i++;
+      setTimeout(type,260);
+    }else{
+      // 开始副标题
+      var j=0;
+      setTimeout(function typeSub(){
+        if(subtitle&&j<subText.length){
+          subtitle.textContent=subText.slice(0,j+1);
+          j++;
+          setTimeout(typeSub,100);
+        }else{
+          // 副标题打完，开始诗句
+          var k=0;
+          setTimeout(function typeQuote(){
+            if(quote&&k<quoteText.length){
+              quote.textContent=quoteText.slice(0,k+1);
+              k++;
+              setTimeout(typeQuote,80);
+            }
+          },300);
+        }
+      },300);
+    }
+  },600);
+})();
+
+// ====== 标题Glitch故障特效（随机触发） ======
+(function(){
+  var title=document.getElementById('navTitle');
+  if(!title) return;
+  function triggerGlitch(){
+    title.classList.add('glitch');
+    setTimeout(function(){title.classList.remove('glitch');},600);
+  }
+  // 每8-15秒随机触发一次
+  function scheduleGlitch(){
+    var delay=8000+Math.random()*7000;
+    setTimeout(function(){triggerGlitch();scheduleGlitch();},delay);
+  }
+  setTimeout(scheduleGlitch,5000);
+})();
+
+// 骨架屏已移除（性能优化）
+
+// 页面过渡动画已移除（性能优化）
+
+// ====== 页面入场动画触发 ======
+requestAnimationFrame(function(){
+  requestAnimationFrame(function(){
+    var l=document.querySelector('.nav-btn-list');
+    if(l) l.classList.add('ready');
+  });
+});
+
+// ====== 下载进度环 ======
+document.querySelectorAll('.nav-item.download').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    if(btn.querySelector('.progress-ring')) return;
+    var ns='http://www.w3.org/2000/svg';
+    var svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('class','progress-ring');
+    svg.setAttribute('viewBox','0 0 36 36');
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx','18'); c.setAttribute('cy','18'); c.setAttribute('r','12');
+    c.setAttribute('stroke-dasharray','75.4'); c.setAttribute('stroke-dashoffset','75.4');
+    svg.appendChild(c); btn.appendChild(svg);
+    requestAnimationFrame(function(){
+      c.style.transition='stroke-dashoffset .6s ease';
+      c.setAttribute('stroke-dashoffset','0');
+    });
+    setTimeout(function(){svg.remove();},750);
+  });
+});
+
+// ====== 复制QQ群号 ======
+document.getElementById('btnCopyQQ').addEventListener('click',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  var qq='753430447';
+  var self=this;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(qq).then(function(){
+      showToast('✅ QQ群号已复制：'+qq);
+    }).catch(function(){fallbackCopy(qq);});
+  }else{fallbackCopy(qq);}
+  function fallbackCopy(text){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');showToast('✅ QQ群号已复制：'+text);}catch(e){showToast('❌ 复制失败，请手动复制：'+text);}
+    document.body.removeChild(ta);
+  }
+});
+
+</script>
+<style>
+@keyframes qrFadeIn{from{opacity:0}to{opacity:1}}
+</style>
+
+<!-- 重新注册自杀型SW v4：清缓存+注销，不强制刷新（避免循环） -->
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js?v=4').then(function(reg){}).catch(function(){});
+}
+</script>
+
+<script>
+// 滚动进度条已移除（性能优化）
+
+// 视差滚动已移除（性能优化）
+
+// ====== 标签页标题动画：切走时变撩人提示 ======
+(function(){
+  var origTitle=document.title;
+  var awayTitle='💔 快回来！ANGEL 在等你...';
+  var blinkTimer=null;
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){
+      document.title=awayTitle;
+      // 标题闪烁一下
+      var dots=['','.','..','...'];
+      var i=0;
+      clearInterval(blinkTimer);
+      blinkTimer=setInterval(function(){
+        document.title=awayTitle+dots[i];
+        i=(i+1)%4;
+      },400);
+    }else{
+      clearInterval(blinkTimer);
+      document.title=origTitle;
+    }
+  });
+})();
+
+// 返回顶部按钮无需滚动监听（纯CSS visibility）
+
+// ====== 手机端按钮振动反馈 ======
+(function(){
+  if(!('vibrate' in navigator)) return;
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('.nav-item');
+    if(btn){ navigator.vibrate(10); }
+  },{passive:true});
+})();
+
+// ====== 访问量数字（直接显示，避免动画占用 rAF） ======
+(function(){
+  var KEY='angel_visit_count';
+  var el=document.getElementById('visitCount');
+  if(!el)return;
+  var n;
+  try{
+    n=parseInt(localStorage.getItem(KEY)||'0',10);
+    if(isNaN(n)||n<1) n=8888;
+    n++;
+    localStorage.setItem(KEY,n.toString());
+  }catch(e){
+    n=8889;
+  }
+  el.textContent=n.toLocaleString();
+})();
+
+// ====== 实时时钟 + 在线时长 ======
+(function(){
+  var timeEl=document.getElementById('clockTime');
+  var dateEl=document.getElementById('clockDate');
+  var sessionEl=document.getElementById('clockSession');
+  if(!timeEl) return;
+  var startTime=Date.now();
+  var weekdays=['周日','周一','周二','周三','周四','周五','周六'];
+  function pad(n){return n<10?'0'+n:''+n;}
+  function update(){
+    var now=new Date();
+    timeEl.textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+    dateEl.textContent=(now.getMonth()+1)+'月'+now.getDate()+'日 '+weekdays[now.getDay()];
+    var elapsed=Math.floor((Date.now()-startTime)/1000);
+    var h=Math.floor(elapsed/3600), m=Math.floor((elapsed%3600)/60), s=elapsed%60;
+    var str='';
+    if(h>0) str+=h+'h ';
+    if(m>0||h>0) str+=m+'m ';
+    str+=s+'s';
+    sessionEl.textContent='⏱ 在线 '+str;
+  }
+  update();
+  setInterval(update,1000);
+})();
+
+// ====== 时段问候语 ======
+(function(){
+  var el=document.getElementById('greetingText');
+  if(!el) return;
+  var h=new Date().getHours();
+  var greeting='';
+  if(h<6) greeting='🌙 凌晨好，夜深了注意休息';
+  else if(h<9) greeting='☀️ 早上好，新的一天开始了';
+  else if(h<12) greeting='🌤️ 上午好，元气满满';
+  else if(h<14) greeting='🍚 中午好，该吃饭啦';
+  else if(h<18) greeting='🌇 下午好，继续加油';
+  else if(h<22) greeting='🌆 晚上好，放松一下吧';
+  else greeting='🌃 深夜好，别熬太晚';
+  el.textContent=greeting;
+})();
+
+// 昼夜色温已移除（性能优化）
+
+// ====== 顶部导航：平滑滚动 + 自动高亮 ======
+(function(){
+  var navItems = document.querySelectorAll('.top-nav-item');
+  var sections = [
+    {id:'top', el: null},
+    {id:'section-kiro', el: document.getElementById('section-kiro')},
+    {id:'section-download', el: document.getElementById('section-download')},
+    {id:'section-community', el: document.getElementById('section-community')}
+  ];
+
+  function setActive(id){
+    navItems.forEach(function(a){
+      if(a.getAttribute('data-target') === id) a.classList.add('active');
+      else a.classList.remove('active');
+    });
+  }
+
+  navItems.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var target = this.getAttribute('data-target');
+      if(target === 'top'){
+        window.scrollTo({top:0, behavior:'smooth'});
+      }else{
+        var el = document.getElementById(target);
+        if(el){
+          var offset = 100;
+          var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({top:top, behavior:'smooth'});
+        }
+      }
+      setActive(target);
+    });
+  });
+
+  function onScroll(){
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    if(st < 120){ setActive('top'); return; }
+    var activeId = 'top';
+    sections.forEach(function(s){
+      if(!s.el) return;
+      var rect = s.el.getBoundingClientRect();
+      if(rect.top <= 120) activeId = s.id;
+    });
+    setActive(activeId);
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+
+<!-- 隐藏的下载触发器 -->
+
+</body>
+</html>
