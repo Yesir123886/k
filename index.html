@@ -9,9 +9,9 @@
 <title>ANGEL 授权中心</title>
 <meta name="theme-color" content="#0a0e27">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/webp" href="assets/logo.webp?v=22">
+<link rel="icon" type="image/webp" href="assets/logo.webp?v=23">
 <link rel="icon" type="image/png" href="assets/logo.png">
-<link rel="apple-touch-icon" href="assets/logo.webp?v=22">
+<link rel="apple-touch-icon" href="assets/logo.webp?v=23">
 <!-- 资源预连接（加速外部跳转） -->
 <link rel="preconnect" href="https://yesir123886.github.io">
 <link rel="dns-prefetch" href="https://yesir123886.github.io">
@@ -1079,7 +1079,7 @@ body::before, body::after {
 <!-- 左侧面板：头像 / 标题 / 介绍 / TG -->
 <div class="left-panel">
   <div class="avatar-wrap">
-    <img src="assets/logo.webp?v=22" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
+    <img src="assets/logo.webp?v=23" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
   </div>
   <h1 class="nav-title" data-text="ANGEL" id="navTitle">ANGEL</h1>
   <p class="nav-subtitle">P蛋爱露出</p>
@@ -1217,6 +1217,7 @@ body::before, body::after {
     if(isSwitching) return;
     isSwitching=true; clearTimer();
     var nextIdx=pickRandomIdx();
+    var switchStart=Date.now();
 
     // ① 在 standby 视频上加载新视频，旧视频继续播放不中断
     standby.src=bgVideos[nextIdx];
@@ -1256,18 +1257,30 @@ body::before, body::after {
 
   function scheduleSwitch(){
     clearTimer();
-    if(!isFinite(active.duration)||active.duration<=0) return;
-    var ms=Math.max((active.duration-0.5)*1000, 500);
+    var dur=active.duration;
+    // duration无效时用12s兜底，确保链条不中断
+    if(!isFinite(dur)||dur<=0) dur=12;
+    // 用剩余播放时间设定时器，而非总时长（新视频可能已播几秒）
+    var remaining=dur-active.currentTime;
+    var ms=Math.max((remaining-0.5)*1000, 500);
     switchTimer=setTimeout(switchVideo, ms);
   }
 
-  active.addEventListener('ended',function(){
+  // 两个video元素都监听ended，不论当前谁是active/standby
+  // 这样角色交换后ended事件仍然有效
+  vA.addEventListener('ended',function(){
     if(!isSwitching){ clearTimer(); switchVideo(); }
   });
-  standby.addEventListener('ended',function(){
-    // standby 不应播放，但以防万一
-    if(active===standby&&!isSwitching){ clearTimer(); switchVideo(); }
+  vB.addEventListener('ended',function(){
+    if(!isSwitching){ clearTimer(); switchVideo(); }
   });
+
+  // 30s安全网：如果链条意外断裂，强制触发切换
+  var safetyInterval=setInterval(function(){
+    if(!isSwitching&&!switchTimer&&videoReady){
+      switchVideo();
+    }
+  },30000);
 
   document.addEventListener('visibilitychange',function(){
     if(document.hidden){ clearTimer(); active.pause(); standby.pause(); }
