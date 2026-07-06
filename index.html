@@ -9,9 +9,9 @@
 <title>ANGEL 授权中心</title>
 <meta name="theme-color" content="#0a0e27">
 <link rel="icon" type="image/svg+xml" href="https://yesir123886.github.io/kiro-auth-system/assets/favicon.svg">
-<link rel="icon" type="image/webp" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=15">
+<link rel="icon" type="image/webp" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=17">
 <link rel="icon" type="image/png" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.png">
-<link rel="apple-touch-icon" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=15">
+<link rel="apple-touch-icon" href="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=17">
 <!-- 资源预连接（加速外部跳转） -->
 <link rel="preconnect" href="https://yesir123886.github.io">
 <link rel="dns-prefetch" href="https://yesir123886.github.io">
@@ -1078,7 +1078,7 @@ body::before, body::after {
 <!-- 左侧面板：头像 / 标题 / 介绍 / TG -->
 <div class="left-panel">
   <div class="avatar-wrap">
-    <img src="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=15" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='https://yesir123886.github.io/kiro-auth-system/assets/logo.png'">
+    <img src="https://yesir123886.github.io/kiro-auth-system/assets/logo.webp?v=17" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='https://yesir123886.github.io/kiro-auth-system/assets/logo.png'">
   </div>
   <h1 class="nav-title" data-text="ANGEL" id="navTitle">ANGEL</h1>
   <p class="nav-subtitle">P蛋爱露出</p>
@@ -1173,32 +1173,29 @@ body::before, body::after {
   if(!v||!wrap) return;
   v.loop=false; v.muted=true;
 
-  var dayVideos=[
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-01.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-03.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-05.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-07.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-09.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-11.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-13.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-15.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-17.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-19.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-21.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-23.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-25.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-27.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-29.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-31.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-33.mp4'
+  // 全部 33 个视频统一随机播放，不区分白天/晚上
+  var bgVideos=[
+    // bg-01~17
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-01.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-02.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-03.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-04.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-05.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-06.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-07.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-08.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-09.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-10.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-11.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-12.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-13.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-14.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-15.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-16.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-17.mp4',
+    // bg-18~33
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-18.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-19.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-20.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-21.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-22.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-23.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-24.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-25.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-26.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-27.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-28.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-29.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-30.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-31.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-32.mp4',
+    'https://yesir123886.github.io/kiro-auth-system/assets/bg-33.mp4'
   ];
-  var nightVideos=[
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-02.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-04.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-06.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-08.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-10.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-12.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-14.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-16.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-18.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-20.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-22.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-24.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-26.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-28.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-30.mp4',
-    'https://yesir123886.github.io/kiro-auth-system/assets/bg-32.mp4'
-  ];
-  var hour=new Date().getHours();
-  var bgVideos=(hour>=6&&hour<18)?dayVideos:nightVideos;
   var currentIdx=-1;
   var switchTimer=null;
   var isSwitching=false;
   var videoReady=false;
 
-  var dayFallback='https://yesir123886.github.io/kiro-auth-system/assets/fallback-day.jpg';
-  var nightFallback='https://yesir123886.github.io/kiro-auth-system/assets/fallback-night.jpg';
-  var fallback=(hour>=6&&hour<18)?dayFallback:nightFallback;
+  var fallback='https://yesir123886.github.io/kiro-auth-system/assets/fallback-day.jpg';
 
   function getPosterUrl(idx){
     return bgVideos[idx].replace('.mp4','.webp');
@@ -1220,28 +1217,27 @@ body::before, body::after {
     return idx;
   }
 
-  // 切换视频：先显缩略图 → 淡出 → 换源 → 淡入
+  // 切换视频：保持当前缩略图 → 淡出 → 换源 → 新视频淡入后再换缩略图（消除一闪而过）
   function switchVideo(){
     if(isSwitching) return;
     isSwitching=true; clearTimer();
     var nextIdx=pickRandomIdx();
-    currentIdx=nextIdx;
 
-    // ① 立刻显示下一个视频的缩略图
-    setPoster(nextIdx);
-
-    // ② 淡出当前视频（露出缩略图）
+    // ① 淡出当前视频（露出当前缩略图，和刚播放的画面一致，不会闪）
     v.style.opacity='0';
 
     setTimeout(function(){
-      // ③ 换源 + 加载
+      // ② 换源 + 加载新视频
       v.src=bgVideos[nextIdx];
       v.load();
       v.play().catch(function(){});
       v.addEventListener('loadeddata',function onReady(){
         v.removeEventListener('loadeddata',onReady);
         videoReady=true;
+        // ③ 先淡入视频（盖住旧 poster），再更新 poster 为新视频缩略图，避免一闪而过
         v.style.opacity='1';
+        currentIdx=nextIdx;
+        setPoster(nextIdx);
         isSwitching=false;
         scheduleSwitch();
       });
@@ -1273,7 +1269,7 @@ body::before, body::after {
 
   // ====== 首次加载：从 jsDelivr 加载兜底图，视频后台加载 ======
   currentIdx=pickRandomIdx();
-  wrap.style.backgroundImage='url('+fallback+')'; // ① 根据时段加载对应兜底图（白天/晚上）
+  wrap.style.backgroundImage='url('+fallback+')'; // ① 兜底图立即显示
 
   function startBackgroundVideo(){
     if(videoReady) return;
