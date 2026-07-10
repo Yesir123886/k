@@ -9,9 +9,9 @@
 <title>ANGEL 授权中心</title>
 <meta name="theme-color" content="#0a0e27">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/webp" href="assets/logo.webp?v=26">
+<link rel="icon" type="image/webp" href="assets/logo.webp?v=27">
 <link rel="icon" type="image/png" href="assets/logo.png">
-<link rel="apple-touch-icon" href="assets/logo.webp?v=26">
+<link rel="apple-touch-icon" href="assets/logo.webp?v=27">
 <!-- 资源预连接（加速外部跳转） -->
 <link rel="preconnect" href="https://yesir123886.github.io">
 <link rel="dns-prefetch" href="https://yesir123886.github.io">
@@ -443,7 +443,7 @@ body, .nav-item, .nav-subtitle, .nav-quote, .nav-group-label, .tg-link, .dl-feed
 .weather-widget { position: relative; }
 .weather-loading, .weather-error {
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 30px 20px; font-size: 13px; color: rgba(160,150,210,.6);
+  padding: 36px 20px; font-size: 13px; color: rgba(160,150,210,.6);
 }
 .weather-spinner {
   width: 18px; height: 18px;
@@ -453,114 +453,133 @@ body, .nav-item, .nav-subtitle, .nav-quote, .nav-group-label, .tg-link, .dl-feed
 }
 @keyframes wSpin { to { transform: rotate(360deg); } }
 
-/* 3D 天气场景 */
-.weather-3d-scene {
-  position: relative; height: 100px; perspective: 400px;
-  overflow: hidden; border-radius: 12px; margin-bottom: 10px;
-  background: linear-gradient(180deg, #1a2350 0%, #0d1230 100%);
-  transition: background .5s;
+/* 天气卡片 */
+.weather-card {
+  position: relative; border-radius: 16px; overflow: hidden;
+  background: linear-gradient(135deg, #1a2350 0%, #0d1230 100%);
+  transition: background .6s ease;
+  box-shadow: 0 4px 24px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.07);
 }
-.weather-3d-scene.night { background: linear-gradient(180deg, #0a0e28 0%, #050818 100%); }
-.weather-3d-scene.weather-fog { background: linear-gradient(180deg, #2a2e3a 0%, #1a1e2a 100%); }
-.weather-3d-scene.weather-thunder { background: linear-gradient(180deg, #1a1530 0%, #0a0820 100%); animation: wThunderFlash 4s ease-in-out infinite; }
-@keyframes wThunderFlash {
-  0%,88%,100% { background: linear-gradient(180deg, #1a1530 0%, #0a0820 100%); }
-  90%,92% { background: linear-gradient(180deg, #3a3560 0%, #2a2560 100%); }
-  91% { background: linear-gradient(180deg, #1a1530 0%, #0a0820 100%); }
-}
-.w-stage { position: absolute; inset: 0; transform-style: preserve-3d; display: flex; align-items: center; justify-content: center; }
+.weather-card.w-clear-day { background: linear-gradient(135deg, #1e4a6e 0%, #0e2d4a 60%, #0a1f35 100%); }
+.weather-card.w-clear-night { background: linear-gradient(135deg, #0a0a28 0%, #050518 60%, #020210 100%); }
+.weather-card.w-cloudy-day { background: linear-gradient(135deg, #3a4055 0%, #262b3d 60%, #1a1e2e 100%); }
+.weather-card.w-cloudy-night { background: linear-gradient(135deg, #1a1e35 0%, #10122a 60%, #080a18 100%); }
+.weather-card.w-rain { background: linear-gradient(135deg, #1a2540 0%, #0d1830 60%, #08101f 100%); }
+.weather-card.w-snow { background: linear-gradient(135deg, #2a3558 0%, #1e2848 60%, #141c35 100%); }
+.weather-card.w-thunder { background: linear-gradient(135deg, #1a1538 0%, #0e0a22 60%, #08051a 100%); }
+.weather-card.w-fog { background: linear-gradient(135deg, #2e3240 0%, #1e2230 60%, #141820 100%); }
 
-/* 太阳 */
-.w-sun {
-  width: 40px; height: 40px;
-  background: radial-gradient(circle at 35% 35%, #fff8c0, #ffd700 45%, #ff9500 85%);
+/* 背景动效层 */
+.weather-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* 太阳光晕 */
+.w-sun-glow {
+  position: absolute; top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(255,210,80,.22) 0%, rgba(255,180,0,.08) 40%, transparent 70%);
+  border-radius: 50%; animation: wGlowPulse 4s ease-in-out infinite;
+}
+@keyframes wGlowPulse { 0%,100%{opacity:.7;transform:scale(1);} 50%{opacity:1;transform:scale(1.08);} }
+
+/* 月亮光晕 */
+.w-moon-glow {
+  position: absolute; top: 8px; right: 12px;
+  width: 56px; height: 56px;
+  background: radial-gradient(circle, rgba(200,215,255,.18) 0%, transparent 65%);
   border-radius: 50%;
-  box-shadow: 0 0 25px rgba(255,200,0,.5), 0 0 50px rgba(255,180,0,.25);
-  transform: translateZ(30px); animation: wSunPulse 3s ease-in-out infinite;
 }
-.w-sun.small { width: 28px; height: 28px; transform: translateZ(25px) translateX(-22px); }
-@keyframes wSunPulse { 0%,100%{transform:translateZ(30px) scale(1);} 50%{transform:translateZ(30px) scale(1.06);} }
-.w-sun-rays {
-  position: absolute; width: 76px; height: 76px;
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(255,210,50,.3) 4deg, transparent 8deg, transparent 37deg, rgba(255,210,50,.3) 41deg, transparent 45deg, transparent 82deg, rgba(255,210,50,.3) 86deg, transparent 90deg, transparent 127deg, rgba(255,210,50,.3) 131deg, transparent 135deg, transparent 172deg, rgba(255,210,50,.3) 176deg, transparent 180deg, transparent 217deg, rgba(255,210,50,.3) 221deg, transparent 225deg, transparent 262deg, rgba(255,210,50,.3) 266deg, transparent 270deg, transparent 307deg, rgba(255,210,50,.3) 311deg, transparent 315deg, transparent 352deg, rgba(255,210,50,.3) 356deg, transparent 360deg);
-  border-radius: 50%; transform: translateZ(15px); animation: wSunRays 20s linear infinite;
-}
-@keyframes wSunRays { to { transform: translateZ(15px) rotate(360deg); } }
-
-/* 云 */
-.w-cloud { position: relative; transform: translateZ(25px); animation: wCloudFloat 5s ease-in-out infinite; }
-@keyframes wCloudFloat { 0%,100%{transform:translateZ(25px) translateY(0);} 50%{transform:translateZ(25px) translateY(-6px);} }
-.w-cloud-puff { position: absolute; background: linear-gradient(135deg, rgba(210,220,240,.95), rgba(170,180,210,.75)); border-radius: 50%; }
-.w-cloud.dark .w-cloud-puff { background: linear-gradient(135deg, rgba(120,125,150,.9), rgba(80,85,110,.75)); }
-.w-cloud.thunder .w-cloud-puff { background: linear-gradient(135deg, rgba(80,75,110,.9), rgba(50,45,80,.8)); }
-.w-cloud-puff.p1 { width: 32px; height: 32px; left: -16px; top: 0; }
-.w-cloud-puff.p2 { width: 40px; height: 40px; left: -4px; top: -12px; }
-.w-cloud-puff.p3 { width: 30px; height: 30px; left: 14px; top: 2px; }
-.w-cloud-puff.p4 { width: 26px; height: 26px; left: 6px; top: 10px; }
-
-/* 雨 */
-.w-rain {
-  position: absolute; width: 2px; height: 12px; top: 35px;
-  background: linear-gradient(180deg, transparent, rgba(140,170,255,.7));
-  border-radius: 2px; transform: translateZ(10px); animation: wRainFall .6s linear infinite;
-}
-@keyframes wRainFall { 0%{transform:translateZ(10px) translateY(0);opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{transform:translateZ(10px) translateY(55px);opacity:0;} }
-
-/* 雪 */
-.w-snow {
-  position: absolute; top: 35px; font-size: 10px; color: rgba(255,255,255,.9);
-  transform: translateZ(10px); animation: wSnowFall 3s linear infinite;
-}
-@keyframes wSnowFall { 0%{transform:translateZ(10px) translateY(0) rotate(0deg);opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{transform:translateZ(10px) translateY(55px) rotate(360deg);opacity:0;} }
-
-/* 闪电 */
-.w-lightning {
-  position: absolute; font-size: 26px; top: 25px; left: 50%; margin-left: -13px;
-  transform: translateZ(20px); animation: wFlash 3s ease-in-out infinite;
-}
-@keyframes wFlash { 0%,85%,100%{opacity:0;} 87%,89%{opacity:1;filter:drop-shadow(0 0 8px rgba(255,255,100,.9));} 88%{opacity:0;} }
-
-/* 雾 */
-.w-fog-line {
-  position: absolute; width: 120%; height: 10px;
-  background: linear-gradient(90deg, transparent, rgba(180,190,210,.5), transparent);
-  border-radius: 6px; animation: wFogDrift 8s linear infinite;
-}
-.w-fog-line.l1 { top: 25%; animation-duration: 7s; }
-.w-fog-line.l2 { top: 50%; animation-duration: 9s; animation-delay: -2s; opacity: .7; }
-.w-fog-line.l3 { top: 70%; animation-duration: 11s; animation-delay: -4s; opacity: .5; }
-@keyframes wFogDrift { 0%{transform:translateX(-60%);} 100%{transform:translateX(20%);} }
 
 /* 星星 */
-.w-stars { position: absolute; inset: 0; pointer-events: none; }
-.w-star { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,.9); border-radius: 50%; animation: wStarTwinkle 2s ease-in-out infinite; }
-@keyframes wStarTwinkle { 0%,100%{opacity:.3;transform:scale(.8);} 50%{opacity:1;transform:scale(1.2);} }
+.w-star { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,.85); border-radius: 50%; animation: wStarTwinkle 2.5s ease-in-out infinite; }
+@keyframes wStarTwinkle { 0%,100%{opacity:.2;transform:scale(.5);} 50%{opacity:1;transform:scale(1.4);} }
 
-/* 天气主信息 */
-.weather-main { display: flex; align-items: center; justify-content: space-between; padding: 0 6px 10px; }
-.weather-info-left { text-align: left; }
-.weather-info-right { text-align: right; }
-.weather-temp { font-size: 34px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 2px 12px rgba(0,0,0,.3); }
-.weather-temp .deg { font-size: 16px; vertical-align: top; margin-left: 1px; opacity: .7; }
-.weather-desc { font-size: 12px; color: rgba(180,170,220,.65); margin-top: 3px; }
-.weather-icon { font-size: 26px; line-height: 1; margin-bottom: 3px; }
-.weather-location { font-size: 11px; color: rgba(160,150,210,.55); }
-.weather-feels { font-size: 11px; color: rgba(160,150,210,.5); margin-top: 2px; }
-
-/* 数据矩阵 */
-.weather-matrix {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-  background: rgba(100,110,180,.1); border-radius: 10px; overflow: hidden;
+/* 雨滴 */
+.w-raindrop {
+  position: absolute; width: 2px; height: 16px; top: -16px;
+  background: linear-gradient(180deg, transparent, rgba(140,170,255,.55));
+  border-radius: 2px; animation: wRainFall .9s linear infinite;
 }
-.matrix-cell { background: rgba(14,18,38,.5); padding: 9px 4px; text-align: center; transition: background .25s; }
-.matrix-cell:hover { background: rgba(24,30,55,.7); }
-.matrix-icon { font-size: 14px; margin-bottom: 2px; }
-.matrix-label { font-size: 9px; color: rgba(150,140,200,.45); letter-spacing: 1px; margin-bottom: 2px; }
-.matrix-value { font-size: 12px; color: rgba(220,220,250,.85); font-weight: 600; }
+@keyframes wRainFall { 0%{transform:translateY(0);opacity:0;} 12%{opacity:1;} 88%{opacity:1;} 100%{transform:translateY(180px);opacity:0;} }
+
+/* 雪花 */
+.w-snowflake {
+  position: absolute; top: -16px; font-size: 9px; color: rgba(255,255,255,.8);
+  animation: wSnowFall 4.5s linear infinite;
+}
+@keyframes wSnowFall { 0%{transform:translateY(0) rotate(0deg) translateX(0);opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{transform:translateY(180px) rotate(360deg) translateX(8px);opacity:0;} }
+
+/* 云层漂移 */
+.w-cloud-bg {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,210,230,.1) 0%, transparent 70%);
+  animation: wCloudDrift 14s linear infinite;
+}
+@keyframes wCloudDrift { 0%{transform:translateX(-40%);} 100%{transform:translateX(140%);} }
+
+/* 闪电闪光 */
+.w-lightning-flash {
+  position: absolute; inset: 0; background: rgba(255,255,200,.12);
+  animation: wFlash 5s ease-in-out infinite;
+}
+@keyframes wFlash { 0%,90%,100%{opacity:0;} 92%,94%{opacity:.8;} 93%{opacity:0;} }
+
+/* 雾带 */
+.w-fog-band {
+  position: absolute; width: 200%; height: 14px;
+  background: linear-gradient(90deg, transparent, rgba(180,190,210,.18), transparent);
+  animation: wFogMove 12s linear infinite;
+}
+@keyframes wFogMove { 0%{transform:translateX(-50%);} 100%{transform:translateX(0%);} }
+
+/* 主内容 */
+.weather-hero {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 22px 6px;
+}
+.weather-icon-lg {
+  font-size: 46px; line-height: 1;
+  filter: drop-shadow(0 2px 10px rgba(255,255,255,.12));
+  animation: wIconFloat 3.5s ease-in-out infinite;
+}
+@keyframes wIconFloat { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-6px) rotate(3deg);} }
+.weather-temp-lg {
+  font-size: 46px; font-weight: 800; color: #fff;
+  line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,.35);
+  letter-spacing: -1px;
+}
+.weather-temp-lg .deg { font-size: 22px; font-weight: 400; vertical-align: top; opacity: .65; margin-left: 1px; }
+
+.weather-info-row {
+  position: relative; z-index: 2;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 22px 16px;
+}
+.weather-info-left { text-align: left; }
+.weather-desc-text { font-size: 14px; color: rgba(230,230,255,.9); font-weight: 600; }
+.weather-feels-text { font-size: 11px; color: rgba(160,150,210,.5); margin-top: 3px; }
+.weather-loc-text { font-size: 12px; color: rgba(180,170,220,.65); text-align: right; }
+
+/* 统计栏 */
+.weather-stats {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 11px 6px;
+  background: rgba(0,0,0,.18);
+  border-top: 1px solid rgba(255,255,255,.05);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.wstat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.wstat-icon { font-size: 13px; opacity: .8; }
+.wstat-label { font-size: 8px; color: rgba(150,140,200,.4); letter-spacing: .5px; text-transform: uppercase; }
+.wstat-val { font-size: 11px; color: rgba(220,220,250,.85); font-weight: 600; }
+
 @media (max-width: 380px) {
-  .weather-temp { font-size: 28px; }
-  .weather-matrix { grid-template-columns: repeat(2, 1fr); }
-  .weather-3d-scene { height: 85px; }
+  .weather-temp-lg { font-size: 38px; }
+  .weather-icon-lg { font-size: 38px; }
+  .weather-hero { padding: 16px 18px 4px; }
+  .weather-info-row { padding: 0 18px 12px; }
 }
 
 /* 分组标签 */
@@ -1172,7 +1191,7 @@ body::before, body::after {
 <!-- 左侧面板：头像 / 标题 / 介绍 / TG -->
 <div class="left-panel">
   <div class="avatar-wrap">
-    <img src="assets/logo.webp?v=26" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
+    <img src="assets/logo.webp?v=27" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
   </div>
   <h1 class="nav-title" data-text="ANGEL" id="navTitle">ANGEL</h1>
   <p class="nav-subtitle">P蛋爱露出</p>
@@ -1202,7 +1221,7 @@ body::before, body::after {
 <a href="https://1842160496.share.123pan.cn/123pan/hAs0Td-Qisbv" target="_blank" class="nav-item kiro-btn btn-md" data-tooltip="辅助/工具合集 · 123云盘"><span class="shimmer-text"><span class="btn-icon">🛠️</span><span class="btn-label">辅助/工具合集</span></span></a>
 <a href="https://buy.jry0.com/shop/E0ZBFJ5E" target="_blank" class="nav-item kiro-btn accent btn-lg" data-tooltip="主卡网 · 有手续费"><span class="shimmer-text"><span class="btn-icon">🛒</span><span class="btn-label">主卡网---有手续费</span></span></a>
 <a href="http://ptopd.top/" target="_blank" class="nav-item kiro-btn accent btn-lg" data-tooltip="备用卡网 · 无手续费"><span class="shimmer-text"><span class="btn-icon">🛒</span><span class="btn-label">备用卡网----无手续费</span></span></a>
-<a href="http://hp.hysafe.top:9191/" target="_blank" class="nav-item kiro-btn lottery btn-lg" data-tooltip="🎉 Kiro 专属抽奖活动页"><span class="shimmer-text"><span class="btn-icon">🎁</span><span class="btn-label">点我跳转kiro抽奖地址</span></span></a>
+<a href="https://hp.hysafe.top/" target="_blank" class="nav-item kiro-btn lottery btn-lg" data-tooltip="🎉 Kiro 专属抽奖活动页"><span class="shimmer-text"><span class="btn-icon">🎁</span><span class="btn-label">点我跳转kiro抽奖地址</span></span></a>
 </div>
 
 <!-- === 实时天气 === -->
@@ -1211,25 +1230,26 @@ body::before, body::after {
 <div class="weather-widget">
   <div class="weather-loading" id="weatherLoading"><div class="weather-spinner"></div><span>正在获取位置和天气...</span></div>
   <div class="weather-content" id="weatherContent" style="display:none;">
-    <div class="weather-3d-scene" id="weatherScene"></div>
-    <div class="weather-main">
-      <div class="weather-info-left">
-        <div class="weather-temp"><span id="weatherTemp">--</span><span class="deg">°C</span></div>
-        <div class="weather-desc" id="weatherDesc">--</div>
+    <div class="weather-card" id="weatherCard">
+      <div class="weather-bg" id="weatherBg"></div>
+      <div class="weather-hero">
+        <div class="weather-icon-lg" id="weatherIcon">🌤️</div>
+        <div class="weather-temp-lg"><span id="weatherTemp">--</span><span class="deg">°</span></div>
       </div>
-      <div class="weather-info-right">
-        <div class="weather-icon" id="weatherIcon">🌤️</div>
-        <div class="weather-location">📍 <span id="weatherCity">--</span></div>
-        <div class="weather-feels">体感 <span id="weatherFeels">--</span>°</div>
+      <div class="weather-info-row">
+        <div class="weather-info-left">
+          <div class="weather-desc-text" id="weatherDesc">--</div>
+          <div class="weather-feels-text">体感 <span id="weatherFeels">--</span>°</div>
+        </div>
+        <div class="weather-loc-text">📍 <span id="weatherCity">--</span></div>
       </div>
-    </div>
-    <div class="weather-matrix">
-      <div class="matrix-cell"><div class="matrix-icon">💧</div><div class="matrix-label">湿度</div><div class="matrix-value" id="wHumidity">--</div></div>
-      <div class="matrix-cell"><div class="matrix-icon">💨</div><div class="matrix-label">风速</div><div class="matrix-value" id="wWind">--</div></div>
-      <div class="matrix-cell"><div class="matrix-icon">🧭</div><div class="matrix-label">风向</div><div class="matrix-value" id="wWindDir">--</div></div>
-      <div class="matrix-cell"><div class="matrix-icon">☁️</div><div class="matrix-label">云量</div><div class="matrix-value" id="wCloud">--</div></div>
-      <div class="matrix-cell"><div class="matrix-icon">🔆</div><div class="matrix-label">气压</div><div class="matrix-value" id="wPressure">--</div></div>
-      <div class="matrix-cell"><div class="matrix-icon">🌧️</div><div class="matrix-label">降水</div><div class="matrix-value" id="wPrecip">--</div></div>
+      <div class="weather-stats">
+        <div class="wstat"><span class="wstat-icon">💧</span><span class="wstat-label">湿度</span><span class="wstat-val" id="wHumidity">--</span></div>
+        <div class="wstat"><span class="wstat-icon">💨</span><span class="wstat-label">风速</span><span class="wstat-val" id="wWind">--</span></div>
+        <div class="wstat"><span class="wstat-icon">🧭</span><span class="wstat-label">风向</span><span class="wstat-val" id="wWindDir">--</span></div>
+        <div class="wstat"><span class="wstat-icon">☁️</span><span class="wstat-label">云量</span><span class="wstat-val" id="wCloud">--</span></div>
+        <div class="wstat"><span class="wstat-icon">📊</span><span class="wstat-label">气压</span><span class="wstat-val" id="wPressure">--</span></div>
+      </div>
     </div>
   </div>
   <div class="weather-error" id="weatherError" style="display:none;"><span>⚠️ 无法获取天气，请刷新重试</span></div>
@@ -1450,63 +1470,69 @@ body::before, body::after {
 // ====== 实时天气组件 ======
 (function(){
   var wMap={
-    0:{d:'晴',i:'☀️',t:'sun'},1:{d:'晴',i:'🌤️',t:'sun-cloud'},2:{d:'多云',i:'⛅',t:'cloud'},3:{d:'阴',i:'☁️',t:'cloud-heavy'},
-    45:{d:'雾',i:'🌫️',t:'fog'},48:{d:'冻雾',i:'🌫️',t:'fog'},
-    51:{d:'小毛毛雨',i:'🌦️',t:'drizzle'},53:{d:'毛毛雨',i:'🌦️',t:'drizzle'},55:{d:'大毛毛雨',i:'🌦️',t:'drizzle'},
-    56:{d:'冻雨',i:'🌧️',t:'rain'},57:{d:'冻雨',i:'🌧️',t:'rain'},
-    61:{d:'小雨',i:'🌧️',t:'rain'},63:{d:'中雨',i:'🌧️',t:'rain'},65:{d:'大雨',i:'🌧️',t:'rain-heavy'},
-    66:{d:'冻雨',i:'🌧️',t:'rain'},67:{d:'大冻雨',i:'🌧️',t:'rain-heavy'},
-    71:{d:'小雪',i:'🌨️',t:'snow'},73:{d:'中雪',i:'🌨️',t:'snow'},75:{d:'大雪',i:'❄️',t:'snow-heavy'},77:{d:'雪粒',i:'🌨️',t:'snow'},
-    80:{d:'阵雨',i:'🌧️',t:'rain'},81:{d:'中阵雨',i:'🌧️',t:'rain'},82:{d:'大阵雨',i:'🌧️',t:'rain-heavy'},
-    85:{d:'阵雪',i:'🌨️',t:'snow'},86:{d:'大阵雪',i:'❄️',t:'snow-heavy'},
-    95:{d:'雷阵雨',i:'⛈️',t:'thunder'},96:{d:'雷阵雨伴冰雹',i:'⛈️',t:'thunder'},99:{d:'强雷暴',i:'⛈️',t:'thunder'}
+    0:{d:'晴朗',i:'☀️',c:'clear'},1:{d:'晴',i:'🌤️',c:'clear'},2:{d:'多云',i:'⛅',c:'cloudy'},3:{d:'阴',i:'☁️',c:'cloudy'},
+    45:{d:'雾',i:'🌫️',c:'fog'},48:{d:'冻雾',i:'🌫️',c:'fog'},
+    51:{d:'毛毛雨',i:'🌦️',c:'rain'},53:{d:'毛毛雨',i:'🌦️',c:'rain'},55:{d:'大毛雨',i:'🌦️',c:'rain'},
+    56:{d:'冻雨',i:'🌧️',c:'rain'},57:{d:'冻雨',i:'🌧️',c:'rain'},
+    61:{d:'小雨',i:'🌧️',c:'rain'},63:{d:'中雨',i:'🌧️',c:'rain'},65:{d:'大雨',i:'🌧️',c:'rain'},
+    66:{d:'冻雨',i:'🌧️',c:'rain'},67:{d:'大冻雨',i:'🌧️',c:'rain'},
+    71:{d:'小雪',i:'🌨️',c:'snow'},73:{d:'中雪',i:'🌨️',c:'snow'},75:{d:'大雪',i:'❄️',c:'snow'},77:{d:'雪粒',i:'🌨️',c:'snow'},
+    80:{d:'阵雨',i:'🌧️',c:'rain'},81:{d:'中阵雨',i:'🌧️',c:'rain'},82:{d:'大阵雨',i:'⛈️',c:'rain'},
+    85:{d:'阵雪',i:'🌨️',c:'snow'},86:{d:'大阵雪',i:'❄️',c:'snow'},
+    95:{d:'雷阵雨',i:'⛈️',c:'thunder'},96:{d:'雷阵雨伴冰雹',i:'⛈️',c:'thunder'},99:{d:'强雷暴',i:'⛈️',c:'thunder'}
   };
-  function windDir(d){var dirs=['北','东北','东','东南','南','西南','西','西北'];return dirs[Math.round(d/45)%8]+'风';}
-  function buildScene(type,isDay){
-    var el=document.getElementById('weatherScene');
-    el.className='weather-3d-scene weather-'+type+(isDay?'':' night');
+  function windDir(d){var dirs=['北','东北','东','东南','南','西南','西','西北'];return dirs[Math.round(d/45)%8];}
+  function buildBg(cat,isDay){
+    var card=document.getElementById('weatherCard');
+    var bg=document.getElementById('weatherBg');
+    var cls='weather-card '+(isDay?'w-'+cat+'-day':'w-'+cat+'-night');
+    card.className=cls;
     var h='';
-    if(type==='sun'){h='<div class="w-stage"><div class="w-sun-rays"></div><div class="w-sun"></div></div>';}
-    else if(type==='sun-cloud'){h='<div class="w-stage"><div class="w-sun small"></div><div class="w-cloud"><div class="w-cloud-puff p1"></div><div class="w-cloud-puff p2"></div><div class="w-cloud-puff p3"></div></div></div>';}
-    else if(type==='cloud'){h='<div class="w-stage"><div class="w-cloud"><div class="w-cloud-puff p1"></div><div class="w-cloud-puff p2"></div><div class="w-cloud-puff p3"></div></div></div>';}
-    else if(type==='cloud-heavy'){h='<div class="w-stage"><div class="w-cloud dark"><div class="w-cloud-puff p1"></div><div class="w-cloud-puff p2"></div><div class="w-cloud-puff p3"></div><div class="w-cloud-puff p4"></div></div></div>';}
-    else if(type==='drizzle'||type==='rain'||type==='rain-heavy'){
-      var n=type==='rain-heavy'?12:type==='rain'?8:5;
-      h='<div class="w-stage"><div class="w-cloud dark"><div class="w-cloud-puff p1"></div><div class="w-cloud-puff p2"></div><div class="w-cloud-puff p3"></div></div>';
-      for(var i=0;i<n;i++) h+='<div class="w-rain" style="left:'+(15+i*70/n)+'%;animation-delay:'+(i*0.1).toFixed(1)+'s;animation-duration:'+(0.5+Math.random()*0.3).toFixed(2)+'s"></div>';
-      h+='</div>';
+    // 太阳/月亮光晕
+    if(cat==='clear'){
+      if(isDay){
+        h+='<div class="w-sun-glow"></div>';
+      } else {
+        h+='<div class="w-moon-glow"></div>';
+        for(var s=0;s<10;s++) h+='<div class="w-star" style="left:'+(5+s*10)+'%;top:'+(8+Math.random()*35).toFixed(0)+'%;animation-delay:'+(s*0.4).toFixed(1)+'s"></div>';
+      }
+    } else if(cat==='cloudy'){
+      h+='<div class="w-cloud-bg" style="width:80px;height:40px;top:15%;left:10%;animation-delay:0s"></div>';
+      h+='<div class="w-cloud-bg" style="width:100px;height:50px;top:25%;left:40%;animation-delay:-4s;animation-duration:18s"></div>';
+      if(!isDay){
+        h+='<div class="w-moon-glow"></div>';
+        for(var s=0;s<6;s++) h+='<div class="w-star" style="left:'+(5+s*15)+'%;top:'+(8+Math.random()*30).toFixed(0)+'%;animation-delay:'+(s*0.5).toFixed(1)+'s"></div>';
+      }
+    } else if(cat==='rain'){
+      for(var i=0;i<14;i++) h+='<div class="w-raindrop" style="left:'+(5+i*6.5).toFixed(1)+'%;animation-delay:'+(i*0.12).toFixed(2)+'s;animation-duration:'+(0.7+Math.random()*0.4).toFixed(2)+'s"></div>';
+      h+='<div class="w-cloud-bg" style="width:120px;height:50px;top:0;left:20%;animation-delay:0s;opacity:.3"></div>';
+    } else if(cat==='snow'){
+      for(var i=0;i<12;i++) h+='<div class="w-snowflake" style="left:'+(5+i*7.5).toFixed(1)+'%;animation-delay:'+(i*0.35).toFixed(2)+'s;animation-duration:'+(3.5+Math.random()*2).toFixed(1)+'s">❄</div>';
+    } else if(cat==='thunder'){
+      h+='<div class="w-lightning-flash"></div>';
+      for(var i=0;i<10;i++) h+='<div class="w-raindrop" style="left:'+(8+i*7.5).toFixed(1)+'%;animation-delay:'+(i*0.15).toFixed(2)+'s;animation-duration:'+(0.6+Math.random()*0.3).toFixed(2)+'s"></div>';
+    } else if(cat==='fog'){
+      h+='<div class="w-fog-band" style="top:30%"></div>';
+      h+='<div class="w-fog-band" style="top:55%;animation-delay:-4s;animation-duration:15s"></div>';
+      h+='<div class="w-fog-band" style="top:75%;animation-delay:-8s;animation-duration:10s;opacity:.6"></div>';
     }
-    else if(type==='snow'||type==='snow-heavy'){
-      var sn=type==='snow-heavy'?10:6;
-      h='<div class="w-stage"><div class="w-cloud dark"><div class="w-cloud-puff p1"></div><div class="w-cloud-puff p2"></div><div class="w-cloud-puff p3"></div></div>';
-      for(var i=0;i<sn;i++) h+='<div class="w-snow" style="left:'+(10+i*80/sn)+'%;animation-delay:'+(i*0.3).toFixed(1)+'s;animation-duration:'+(2+Math.random()*1.5).toFixed(1)+'s">❄</div>';
-      h+='</div>';
-    }
-    else if(type==='thunder'){h='<div class="w-stage"><div class="w-cloud thunder"><div class="w-cloud-puff p1"></div><div class="w-cloud-puff p2"></div><div class="w-cloud-puff p3"></div></div><div class="w-lightning">⚡</div></div>';}
-    else if(type==='fog'){h='<div class="w-stage"><div class="w-fog-line l1"></div><div class="w-fog-line l2"></div><div class="w-fog-line l3"></div></div>';}
-    if(!isDay&&type!=='thunder'&&type!=='fog'){
-      h+='<div class="w-stars">';
-      for(var s=0;s<8;s++) h+='<div class="w-star" style="left:'+(5+s*12)+'%;top:'+(10+Math.random()*40).toFixed(0)+'%;animation-delay:'+(s*0.5).toFixed(1)+'s"></div>';
-      h+='</div>';
-    }
-    el.innerHTML=h;
+    bg.innerHTML=h;
   }
   function renderWeather(data,city){
-    var c=data.current,w=wMap[c.weather_code]||{d:'未知',i:'❓',t:'cloud'},isDay=c.is_day!==0;
+    var c=data.current,w=wMap[c.weather_code]||{d:'未知',i:'❓',c:'cloudy'},isDay=c.is_day!==0;
     document.getElementById('weatherLoading').style.display='none';
     document.getElementById('weatherContent').style.display='block';
-    buildScene(w.t,isDay);
+    buildBg(w.c,isDay);
     document.getElementById('weatherIcon').textContent=w.i;
     document.getElementById('weatherTemp').textContent=Math.round(c.temperature_2m);
     document.getElementById('weatherDesc').textContent=w.d;
     document.getElementById('weatherCity').textContent=city||'未知';
     document.getElementById('weatherFeels').textContent=Math.round(c.apparent_temperature);
     document.getElementById('wHumidity').textContent=c.relative_humidity_2m+'%';
-    document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' km/h';
+    document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+'km/h';
     document.getElementById('wWindDir').textContent=windDir(c.wind_direction_10m);
     document.getElementById('wCloud').textContent=(c.cloud_cover||0)+'%';
-    document.getElementById('wPressure').textContent=Math.round(c.pressure_msl)+' hPa';
-    document.getElementById('wPrecip').textContent=(c.precipitation||0)+' mm';
+    document.getElementById('wPressure').textContent=Math.round(c.pressure_msl)+'hPa';
   }
   function fetchWeather(lat,lon,city){
     var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m&timezone=auto';
