@@ -9,9 +9,9 @@
 <title>ANGEL 授权中心</title>
 <meta name="theme-color" content="#0a0e27">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/webp" href="assets/logo.webp?v=28">
+<link rel="icon" type="image/webp" href="assets/logo.webp?v=29">
 <link rel="icon" type="image/png" href="assets/logo.png">
-<link rel="apple-touch-icon" href="assets/logo.webp?v=28">
+<link rel="apple-touch-icon" href="assets/logo.webp?v=29">
 <!-- 资源预连接（加速外部跳转） -->
 <link rel="preconnect" href="https://yesir123886.github.io">
 <link rel="dns-prefetch" href="https://yesir123886.github.io">
@@ -1168,8 +1168,8 @@ body::before, body::after {
 <body style="background:transparent;min-height:100vh;">
 <!-- 视频背景容器 -->
 <div id="videoBgWrap" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-color:#080a14;background-size:cover;background-position:center;background-repeat:no-repeat;">
-  <video id="videoBgA" muted playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.4s ease-in-out;"></video>
-  <video id="videoBgB" muted playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.4s ease-in-out;"></video>
+  <video id="videoBgA" muted playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.3s ease-in-out;will-change:transform,opacity;"></video>
+  <video id="videoBgB" muted playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.3s ease-in-out;will-change:transform,opacity;"></video>
 </div>
 
 <!-- 顶部固定导航栏 -->
@@ -1191,7 +1191,7 @@ body::before, body::after {
 <!-- 左侧面板：头像 / 标题 / 介绍 / TG -->
 <div class="left-panel">
   <div class="avatar-wrap">
-    <img src="assets/logo.webp?v=28" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
+    <img src="assets/logo.webp?v=29" alt="ANGEL" class="nav-avatar" loading="lazy" onerror="this.src='assets/logo.png'">
   </div>
   <h1 class="nav-title" data-text="ANGEL" id="navTitle">ANGEL</h1>
   <p class="nav-subtitle">P蛋爱露出</p>
@@ -1304,7 +1304,7 @@ body::before, body::after {
   console.log('%c⚠ 安全警告：请勿在此页面执行任何代码','color:red;font-size:20px;');
 })();
 
-// ====== 视频背景初始化（双视频交叉淡入淡出，消除切换闪屏） ======
+// ====== 视频背景（双视频交叉淡入淡出，预加载优化版） ======
 (function(){
   var wrap=document.getElementById('videoBgWrap');
   var vA=document.getElementById('videoBgA');
@@ -1312,16 +1312,13 @@ body::before, body::after {
   if(!vA||!vB||!wrap) return;
   vA.loop=false; vB.loop=false;
 
-  // 全部 33 个视频统一随机播放，不区分白天/晚上
   var bgVideos=[
-    // bg-01~17
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-01.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-02.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-03.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-04.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-05.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-06.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-07.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-08.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-09.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-10.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-11.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-12.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-13.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-14.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-15.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-16.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-17.mp4',
-    // bg-18~33
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-18.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-19.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-20.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-21.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-22.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-23.mp4',
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-24.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-25.mp4','https://yesir123886.github.io/kiro-auth-system/assets/bg-26.mp4',
@@ -1330,162 +1327,202 @@ body::before, body::after {
     'https://yesir123886.github.io/kiro-auth-system/assets/bg-33.mp4'
   ];
   var currentIdx=-1;
+  var nextIdx=-1;
   var switchTimer=null;
+  var preloadTimer=null;
   var isSwitching=false;
   var videoReady=false;
-
-  // 当前可见的视频元素（A 或 B），切换时交换
+  var preloaded=false;  // standby是否已预载好下一个视频
   var active=vA;
   var standby=vB;
 
-  function clearTimer(){
+  function clearAllTimers(){
     if(switchTimer){ clearTimeout(switchTimer); switchTimer=null; }
+    if(preloadTimer){ clearTimeout(preloadTimer); preloadTimer=null; }
   }
 
-  function pickRandomIdx(){
+  function pickRandomIdx(exclude){
     var idx;
     if(bgVideos.length<=1) return 0;
-    do{ idx=Math.floor(Math.random()*bgVideos.length); }while(idx===currentIdx);
+    do{ idx=Math.floor(Math.random()*bgVideos.length); }while(idx===exclude);
     return idx;
   }
 
-  // 切换视频：双视频交叉淡入淡出（旧视频一直可见直到新视频就绪）
-  // 修复：loadeddata 监听器泄漏 + 超时未取消 + 首次加载重试无 handler
+  // ① 提前预载：当前视频播3秒后，开始把下一个视频加载到 standby
+  function startPreload(){
+    if(preloaded||isSwitching) return;
+    nextIdx=pickRandomIdx(currentIdx);
+    standby.src=bgVideos[nextIdx];
+    standby.preload='auto';
+    standby.muted=true;
+    standby.load();
+    // 等缓冲够再标记 preloaded（canplaythrough = 有足够数据可以不中断地播放）
+    function onPreloaded(){
+      standby.removeEventListener('canplaythrough',onPreloaded);
+      standby.removeEventListener('error',onPreloadErr);
+      preloaded=true;
+    }
+    function onPreloadErr(){
+      standby.removeEventListener('canplaythrough',onPreloaded);
+      standby.removeEventListener('error',onPreloadErr);
+      preloaded=false;
+      standby.removeAttribute('src');
+      standby.load();
+    }
+    standby.addEventListener('canplaythrough',onPreloaded);
+    standby.addEventListener('error',onPreloadErr);
+  }
+
+  // ② 切换视频：交叉淡入淡出（0.3s，减少双解码窗口）
   function switchVideo(){
     if(isSwitching) return;
-    isSwitching=true; clearTimer();
-    var nextIdx=pickRandomIdx();
+    isSwitching=true; clearAllTimers();
+
+    // 如果已经预载好了，直接交叉淡入淡出（最快最流畅）
+    if(preloaded&&nextIdx>=0){
+      doCrossfade(nextIdx);
+      return;
+    }
+
+    // 没预载好 → 临时加载（降级方案）
+    nextIdx=pickRandomIdx(currentIdx);
     var handled=false;
-    var loadHandler=null;
+    var handler=null;
     var timeoutId=null;
 
     function cleanup(){
-      if(loadHandler){ standby.removeEventListener('loadeddata',loadHandler); loadHandler=null; }
+      if(handler){ standby.removeEventListener('canplaythrough',handler); standby.removeEventListener('loadeddata',handler); handler=null; }
       if(timeoutId){ clearTimeout(timeoutId); timeoutId=null; }
     }
 
-    // ① 在 standby 视频上加载新视频（不立即 play，等 loadeddata 再 play）
     standby.src=bgVideos[nextIdx];
     standby.preload='auto';
     standby.muted=true;
     standby.load();
 
-    loadHandler=function onReady(){
-      if(handled) return; // 防止双重触发
+    // 优先等 canplaythrough，备选 loadeddata（2s内如果canplaythrough没触发就用loadeddata）
+    handler=function onReady(){
+      if(handled) return;
       handled=true;
       cleanup();
-      videoReady=true;
-
-      // 确保新视频开始播放
-      standby.play().catch(function(){});
-
-      // ② 交叉淡入淡出：旧视频淡出，新视频淡入（同时进行，0.4s）
-      active.style.opacity='0';
-      standby.style.opacity='1';
-      currentIdx=nextIdx;
-
-      // ③ 交换角色：standby 变为 active，active 变为 standby
-      var tmp=active; active=standby; standby=tmp;
-
-      // ④ 延迟清理旧 standby（等淡出动画完成）
-      setTimeout(function(){
-        standby.removeAttribute('src');
-        standby.load();
-      },500);
-
-      isSwitching=false;
-      scheduleSwitch();
+      doCrossfade(nextIdx);
     };
+    standby.addEventListener('canplaythrough',handler);
+    standby.addEventListener('loadeddata',handler);
 
-    standby.addEventListener('loadeddata',loadHandler);
-
-    // 5s超时兜底 → 旧视频继续，尝试下一段
     timeoutId=setTimeout(function(){
       if(!handled){
         handled=true;
-        cleanup(); // 移除泄漏的 loadeddata 监听器
+        cleanup();
         standby.removeAttribute('src');
         standby.load();
+        preloaded=false;
         isSwitching=false;
         scheduleSwitch();
       }
     },5000);
   }
 
-  function scheduleSwitch(){
-    clearTimer();
-    var dur=active.duration;
-    // duration无效时用12s兜底，确保链条不中断
-    if(!isFinite(dur)||dur<=0) dur=12;
-    // 用剩余播放时间设定时器，而非总时长
-    var remaining=dur-active.currentTime;
-    var ms=Math.max((remaining-0.5)*1000, 500);
-    switchTimer=setTimeout(switchVideo, ms);
+  // 交叉淡入淡出核心逻辑
+  function doCrossfade(idx){
+    // 先 play 新视频，确保在播放状态
+    standby.play().catch(function(){});
+    // 交叉淡入淡出：旧视频淡出，新视频淡入（0.3s）
+    active.style.opacity='0';
+    standby.style.opacity='1';
+    currentIdx=idx;
+    // 交换角色
+    var tmp=active; active=standby; standby=tmp;
+    // 延迟清理旧 standby（等淡出动画完成 0.3s + 安全余量 0.2s）
+    setTimeout(function(){
+      standby.removeAttribute('src');
+      standby.load();
+      preloaded=false;
+    },400);
+    isSwitching=false;
+    scheduleSwitch();
   }
 
-  // 两个video元素都监听ended，不论当前谁是active/standby
-  vA.addEventListener('ended',function(){
-    if(!isSwitching){ clearTimer(); switchVideo(); }
-  });
-  vB.addEventListener('ended',function(){
-    if(!isSwitching){ clearTimer(); switchVideo(); }
-  });
+  // ③ 定时调度：计算剩余播放时间，提前3秒触发预载，视频结束时触发切换
+  function scheduleSwitch(){
+    clearAllTimers();
+    var dur=active.duration;
+    if(!isFinite(dur)||dur<=0) dur=12;
+    var remaining=dur-active.currentTime;
+    // 提前3秒开始预载下一个视频
+    var preloadDelay=Math.max((remaining-3)*1000, 500);
+    // 视频快结束时触发切换（剩余0.3s）
+    var switchDelay=Math.max((remaining-0.3)*1000, 800);
+    // 如果视频很短(<4s)，预载和切换几乎同时
+    if(remaining<=4){
+      preloadDelay=200;
+    }
+    preloadTimer=setTimeout(startPreload, preloadDelay);
+    switchTimer=setTimeout(function(){
+      if(!isSwitching){ switchVideo(); }
+    }, switchDelay);
+  }
 
-  // 30s安全网：如果链条意外断裂，强制触发切换
-  var safetyInterval=setInterval(function(){
+  // 两个 video 都监听 ended
+  vA.addEventListener('ended',function(){ if(!isSwitching){ clearAllTimers(); switchVideo(); } });
+  vB.addEventListener('ended',function(){ if(!isSwitching){ clearAllTimers(); switchVideo(); } });
+
+  // 30s 安全网
+  var safetyNet=setInterval(function(){
     if(!isSwitching&&!switchTimer&&videoReady){
+      clearAllTimers();
       switchVideo();
     }
   },30000);
 
+  // 页面可见性
   document.addEventListener('visibilitychange',function(){
-    if(document.hidden){ clearTimer(); active.pause(); standby.pause(); }
-    else{ active.play().catch(function(){}); if(!isSwitching) scheduleSwitch(); }
+    if(document.hidden){ clearAllTimers(); active.pause(); standby.pause(); }
+    else{
+      if(active.src&&active.readyState>=2) active.play().catch(function(){});
+      if(!isSwitching) scheduleSwitch();
+    }
   });
 
-  active.addEventListener('error',function(){
-    active.style.opacity='0';
-  });
-  standby.addEventListener('error',function(){
-    standby.removeAttribute('src');
-    standby.load();
-  });
+  // 错误处理
+  vA.addEventListener('error',function(){ if(active===vA) active.style.opacity='0'; });
+  vB.addEventListener('error',function(){ if(active===vB) active.style.opacity='0'; });
 
-  // ====== 首次加载（修复：重试时需要新的 loadeddata handler） ======
+  // ====== 首次加载 ======
   var firstHandled=false;
-  var firstLoadHandler=null;
 
   function tryFirstLoad(){
     if(videoReady||firstHandled) return;
-    // 移除旧的 handler（如果有）
-    if(firstLoadHandler){ active.removeEventListener('loadeddata',firstLoadHandler); }
-
-    currentIdx=pickRandomIdx();
+    currentIdx=pickRandomIdx(-1);
     active.src=bgVideos[currentIdx];
     active.preload='auto';
     active.muted=true;
     active.load();
 
-    firstLoadHandler=function onFirst(){
+    function onFirstReady(){
       if(firstHandled) return;
       firstHandled=true;
-      active.removeEventListener('loadeddata',firstLoadHandler);
-      firstLoadHandler=null;
+      active.removeEventListener('canplaythrough',onFirstReady);
+      active.removeEventListener('loadeddata',onFirstReady);
       videoReady=true;
       active.style.opacity='1';
       active.play().catch(function(){});
       scheduleSwitch();
-    };
-
-    active.addEventListener('loadeddata',firstLoadHandler);
-    active.play().catch(function(){});
+    }
+    // 优先 canplaythrough，备选 loadeddata
+    active.addEventListener('canplaythrough',onFirstReady);
+    active.addEventListener('loadeddata',onFirstReady);
   }
 
   tryFirstLoad();
 
-  // 5s重试兜底
+  // 5s 重试兜底
   setTimeout(function(){
-    if(!firstHandled) tryFirstLoad();
+    if(!firstHandled){
+      active.removeEventListener('canplaythrough',onFirstReady);
+      tryFirstLoad();
+    }
+    function onFirstReady(){}
   },5000);
 
 })();
